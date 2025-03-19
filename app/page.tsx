@@ -168,10 +168,10 @@ reasoning.
               2024)
             </li>
             <li>
-              <strong>Udemy</strong> – Front and Backend Web Development (26 Hrs, 2024)
+              <strong>Udemy</strong> – Front and Backend Web Development (38 Hrs, 2024)
             </li>
             <li>
-              <strong>Eafit University</strong> – English  (26 Hrs, 2024)
+              <strong>Eafit University</strong> – English  lvl B2 writting, reading & speaking(3 years 2013, 2026)
             </li>
           </ul>
         </div>
