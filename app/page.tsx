@@ -2,57 +2,231 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <header className="text-center mb-8">
-        <Image
-          src="/your-photo.jpg" // Asegúrate de tener una foto en el directorio public
-          alt="Your Name"
-          width={150}
-          height={150}
-          className="rounded-full mx-auto"
-        />
-        <h1 className="text-3xl font-bold mt-4">Tu Nombre</h1>
-        <p className="text-gray-600">Desarrollador Web | Especialista en React y Next.js</p>
-      </header>
+    <div className="bg-black min-h-screen py-10 px-4 text-white">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* HEADER: spans both columns on md+ */}
+        <div className="md:col-span-2 bg-gray-900/50 p-6 rounded-lg flex flex-col items-center">
+          <div className="relative rounded-full overflow-hidden w-36 h-36 border-4 border-pink-500 mb-4">
+            <Image
+              src="/Foto gafas.jpeg"
+              alt="Profile Image"
+              fill
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <h1
+            className="text-4xl font-bold"
+            style={{
+              textShadow: "0 0 2px #ff0099, 0 0 5px #ff0099",
+            }}
+          >
+            Sebastian Valencia Vargas
+          </h1>
+          <p className="text-lg mt-2 text-gray-300">
+            FullStack Developer | Expert in React, Next.js, Node.js, and More
+          </p>
+        </div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold">Introducción</h2>
-        <p className="text-gray-700">
-          Hola, soy [Tu Nombre], un desarrollador apasionado por crear aplicaciones web modernas y eficientes. Me especializo en tecnologías como React, Next.js, y Node.js.
-        </p>
-      </section>
+        {/* INTRODUCTION CARD (left column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Introduction
+          </h2>
+          <p className="text-gray-200 leading-relaxed">
+            Hi, I’m Sebastian Valencia Vargas – a modern, versatile professional
+            with experience in software development, technical support, and
+            systems administration. My passion is building efficient, secure
+            digital solutions using technologies such as Next.js, React.js,
+            Node.js, Python, PHP, C++, and C#. I have a solid foundation in data
+            structures, algorithms, and agile methodologies that help me tackle
+            complex challenges.
+          </p>
+        </div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold">Experiencia Profesional</h2>
-        <ul className="list-disc list-inside text-gray-700">
-          <li>Empresa XYZ - Desarrollador Frontend (2020 - Presente)</li>
-          <li>Empresa ABC - Desarrollador Backend (2018 - 2020)</li>
-        </ul>
-      </section>
+        {/* PROFESSIONAL EXPERIENCE CARD (right column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Professional Experience
+          </h2>
+          <ul className="list-disc list-inside text-gray-200 space-y-2">
+            <li>
+              <strong>Avianca Holdings</strong> – Aircraft Maintenance Technician{" "}
+              <em>(Sep 2018 – Mar 2020)</em>
+              <br />
+              Responsible for inspections, repairs, and component installations on
+              commercial and private aircraft, collaborating with the team to
+              deliver high-quality results.
+            </li>
+            <li>
+              <strong>Granity Entertainment DAC</strong> – Webmaster &amp; Technical
+              Support <em>(Jun 2023 – Nov 2024)</em>
+              <br />
+              Specialized in technical support, problem resolution, and ensuring
+              security and efficiency in multiple languages (French, English,
+              Portuguese, German, Russian, Italian, Dutch).
+            </li>
+            <li>
+              <strong>Ducaplast Sas</strong> – FullStack Developer{" "}
+              <em>(Jun 2024 – Nov 2024)</em>
+              <br />
+              Developed an e-commerce platform (
+              <a
+                href="https://ducaplast.com.co/"
+                className="text-pink-400 underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                ducaplast.com.co
+              </a>
+              ) using Python and Django (SQLite for development, PostgreSQL in
+              production) and HTML, CSS/Bootstrap, and JavaScript for a responsive
+              front-end.
+            </li>
+          </ul>
+        </div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold">Proyectos</h2>
-        <ul className="list-disc list-inside text-gray-700">
-          <li>Proyecto 1: Descripción breve</li>
-          <li>Proyecto 2: Descripción breve</li>
-        </ul>
-      </section>
+        {/* PROJECTS & FREELANCE CARD (left column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Projects &amp; Freelance
+          </h2>
+          <ul className="list-disc list-inside text-gray-200 space-y-2">
+            <li>
+              <strong>Freelancer:</strong> Object-Oriented Programming Project at I.E
+              Pascual Bravo (38 Hrs, 2023)
+            </li>
+            <li>
+              <strong>Web Development Projects:</strong> Integration and optimization
+              of modern front-end and back-end solutions.
+            </li>
+          </ul>
+        </div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold">Habilidades</h2>
-        <p className="text-gray-700">JavaScript, React, Next.js, Node.js, CSS, etc.</p>
-      </section>
+        {/* SKILLS CARD (right column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Skills
+          </h2>
+          <p className="text-gray-200">
+            JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js,
+            Vite, HTML, CSS/Bootstrap, Django, SQL, Agile methodologies, data structures,
+            algorithms, secure coding, and systems administration.
+          </p>
+        </div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold">Educación</h2>
-        <p className="text-gray-700">Licenciatura en Ciencias de la Computación, Universidad XYZ</p>
-      </section>
+        {/* EDUCATION & COURSES CARD (left column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Education &amp; Courses
+          </h2>
+          <ul className="list-disc list-inside text-gray-200 space-y-2">
+            <li>
+              <strong>Institución Universitaria Pascual Bravo</strong> – Software
+              Developer (2020 – 2024)
+            </li>
+            <li>
+              <strong>Colegio La Salle Medellín</strong> – High School Diploma (2008 –
+              2015)
+            </li>
+            <li>
+              <strong>Academia Antioqueña de Aviación</strong> – Aircraft Maintenance
+              Technician (2016 – 2020)
+            </li>
+            <li>
+              <strong>Eafit</strong> – Information Security / IT Essentials (50 Hrs,
+              2024)
+            </li>
+            <li>
+              <strong>Udemy</strong> – Front and Backend Web Development (26 Hrs, 2024)
+            </li>
+          </ul>
+        </div>
 
-      <section>
-        <h2 className="text-2xl font-semibold">Contacto</h2>
-        <p className="text-gray-700">Email: tuemail@example.com</p>
-        <p className="text-gray-700">LinkedIn: <a href="https://linkedin.com/in/tuperfil" className="text-blue-500">tuperfil</a></p>
-      </section>
+        {/* CONTACT CARD (right column) */}
+        <div className="bg-gray-900/50 p-6 rounded-lg">
+          <h2
+            className="text-3xl font-semibold mb-4"
+            style={{
+              textShadow: "0 0 2px #00eaff, 0 0 5px #00eaff",
+            }}
+          >
+            Contact
+          </h2>
+          <p className="text-gray-200">
+            <strong>Email:</strong>{" "}
+            <a
+              href="mailto:sebas1234989252@gmail.com"
+              className="text-pink-400 underline"
+            >
+              sebas1234989252@gmail.com
+            </a>
+          </p>
+          <p className="text-gray-200">
+            <strong>Phone:</strong> (+57) 316 8859466
+          </p>
+          <p className="text-gray-200">
+            <strong>Address:</strong> CR 59 A CL 69 C -9, Medellín, Colombia
+          </p>
+          <p className="text-gray-200">
+            <strong>LinkedIn:</strong>{" "}
+            <a
+              href="https://linkedin.com/in/SebasValenciaV"
+              className="text-pink-400 underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SebasValenciaV
+            </a>
+          </p>
+          <p className="text-gray-200">
+            <strong>GitHub:</strong>{" "}
+            <a
+              href="https://github.com/SebasValenciaV"
+              className="text-pink-400 underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SebasValenciaV
+            </a>
+          </p>
+          <p className="text-gray-200">
+            <strong>Blog:</strong>{" "}
+            <a
+              href="https://developersebastianvalencia.blogspot.com"
+              className="text-pink-400 underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              developersebastianvalencia.blogspot.com
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
