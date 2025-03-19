@@ -113,13 +113,32 @@ reasoning.
           </h2>
           <ul className="list-disc list-inside text-gray-200 space-y-2">
             <li>
-              <strong>Freelancer:</strong> Object-Oriented Programming Project at I.E
-              Pascual Bravo (38 Hrs, 2023)
+            Object-Oriented Programming games (55 Hrs, 2023)
             </li>
-            <li>
-              <strong>Web Development Projects:</strong> Integration and optimization
-              of modern front-end and back-end solutions.
-            </li>
+            
+            <p className="text-gray-200">
+            <strong>GitHub:</strong>{" "}
+            <a
+              href="https://github.com/SebasValenciaV"
+              className="text-pink-400 underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SebasValenciaV
+            </a>
+          </p>
+          <p className="text-gray-200">
+            <strong>Blog:</strong>{" "}
+            <a
+              href="https://developersebastianvalencia.blogspot.com"
+              className="text-pink-400 underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              developersebastianvalencia.blogspot.com
+            </a>
+          </p>
+            
           </ul>
         </div>
 
@@ -210,28 +229,7 @@ reasoning.
               SebasValenciaV
             </a>
           </p>
-          <p className="text-gray-200">
-            <strong>GitHub:</strong>{" "}
-            <a
-              href="https://github.com/SebasValenciaV"
-              className="text-pink-400 underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              SebasValenciaV
-            </a>
-          </p>
-          <p className="text-gray-200">
-            <strong>Blog:</strong>{" "}
-            <a
-              href="https://developersebastianvalencia.blogspot.com"
-              className="text-pink-400 underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              developersebastianvalencia.blogspot.com
-            </a>
-          </p>
+          
         </div>
       </div>
     </div>
