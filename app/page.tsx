@@ -38,13 +38,19 @@ export default function Home() {
             Introduction
           </h2>
           <p className="text-gray-200 leading-relaxed">
-            Hi, I’m Sebastian Valencia Vargas – a modern, versatile professional
-            with experience in software development, technical support, and
-            systems administration. My passion is building efficient, secure
-            digital solutions using technologies such as Next.js, React.js,
-            Node.js, Python, PHP, C++, and C#. I have a solid foundation in data
-            structures, algorithms, and agile methodologies that help me tackle
-            complex challenges.
+          Expert in coding with proficiency in various languages such as Python, PHP, C++,
+C#, and JavaScript, and in frameworks such as Next.js, React.js, Node.js, and Vite. A
+solid foundation in data structures, algorithms, and software architectures,
+combined with agile methodologies, enables me to efficiently solve complex
+challenges. Proficient in both back-end and front-end design, I optimize software
+solutions through secure coding practices.
+I have experience in systems administration, technology management, and website
+development. My exceptional leadership skills allow me to effectively organize tasks
+and coordinate teams or departments to successfully complete projects across
+diverse market and real-life environments.
+Additionally, I have practical experience developing AI prompts that guide models to
+deliver improved accuracy, instruction following, creativity, writing quality, and
+reasoning.
           </p>
         </div>
 
@@ -158,11 +164,14 @@ export default function Home() {
               Technician (2016 – 2020)
             </li>
             <li>
-              <strong>Eafit</strong> – Information Security / IT Essentials (50 Hrs,
+              <strong>I.E Pascual Bravo</strong> – Information Security / IT Essentials (50 Hrs,
               2024)
             </li>
             <li>
               <strong>Udemy</strong> – Front and Backend Web Development (26 Hrs, 2024)
+            </li>
+            <li>
+              <strong>Eafit University</strong> – English  (26 Hrs, 2024)
             </li>
           </ul>
         </div>
@@ -180,18 +189,16 @@ export default function Home() {
           <p className="text-gray-200">
             <strong>Email:</strong>{" "}
             <a
-              href="mailto:sebas1234989252@gmail.com"
+              href="mailto:sebas19-98@hotmail.com"
               className="text-pink-400 underline"
             >
-              sebas1234989252@gmail.com
+              sebas19-98@hotmail.com
             </a>
           </p>
           <p className="text-gray-200">
             <strong>Phone:</strong> (+57) 316 8859466
           </p>
-          <p className="text-gray-200">
-            <strong>Address:</strong> CR 59 A CL 69 C -9, Medellín, Colombia
-          </p>
+        
           <p className="text-gray-200">
             <strong>LinkedIn:</strong>{" "}
             <a
