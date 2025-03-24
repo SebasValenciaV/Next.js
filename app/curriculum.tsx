@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaLinkedin, FaGithub, FaBloggerB } from "react-icons/fa";
 
 export default function CurriculumContent() {
   return (
@@ -15,9 +16,38 @@ export default function CurriculumContent() {
             />
           </div>
           <h1 className="profile-name">Sebastian Valencia Vargas</h1>
-          <p className="profile-description">
-            FullStack Developer | Expert in React, Next.js, Node.js, and More
-          </p>
+          {/* Contenedor de iconos y título */}
+          <div className="header-extra">
+            <p className="profile-description">
+              FullStack Developer | Expert in React, Next.js, Node.js, and More
+            </p>
+            <div className="social-icons-header">
+              <a
+                href="https://www.linkedin.com/in/sebastian-valencia-v-23506b243/"
+                target="_blank"
+                rel="noreferrer"
+                className="social-link"
+              >
+                <FaLinkedin size={24} />
+              </a>
+              <a
+                href="https://github.com/SebasValenciaV"
+                target="_blank"
+                rel="noreferrer"
+                className="social-link"
+              >
+                <FaGithub size={24} />
+              </a>
+              <a
+                href="https://developersebastianvalencia.blogspot.com"
+                target="_blank"
+                rel="noreferrer"
+                className="social-link"
+              >
+                <FaBloggerB size={24} />
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* INTRODUCTION */}
@@ -161,17 +191,6 @@ export default function CurriculumContent() {
           </p>
           <p className="section-text">
             <strong>Phone:</strong> (+57) 316 8859466
-          </p>
-          <p className="section-text">
-            <strong>LinkedIn:</strong>{" "}
-            <a
-              href="https://www.linkedin.com/in/sebastian-valencia-v-23506b243/"
-              target="_blank"
-              rel="noreferrer"
-              className="link"
-            >
-              SebasValenciaV
-            </a>
           </p>
         </div>
       </div>

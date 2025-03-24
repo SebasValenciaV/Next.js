@@ -3,9 +3,43 @@
 import { useState, useEffect } from "react";
 import CurriculumContent from "./curriculum";
 
+function ProjectsSlider() {
+  // Lista de imágenes de empresas y proyectos (ajusta las rutas según corresponda)
+  const images = [
+    "/company1.jpg",
+    "/company2.jpg",
+    "/project1.jpg",
+    "/project2.jpg",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // Cambia de imagen cada 3 segundos
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <div className="slider-container">
+      {images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt={`Slide ${index + 1}`}
+          className={`slider-image ${index === currentIndex ? "active" : ""}`}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function Home() {
   const [showCurriculum, setShowCurriculum] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
 
   useEffect(() => {
     // Configuración del canvas con efecto Matrix
@@ -65,7 +99,17 @@ export default function Home() {
         >
           {showCurriculum ? "Hide CV" : "View Currículum"}
         </button>
+        {/* Nuevo botón para ver mocups de projects */}
+        <button
+          onClick={() => setShowProjects(!showProjects)}
+          className="hero-btn secondary"
+        >
+          {showProjects ? "Hide Projects" : "Ver mocups de projects"}
+        </button>
       </section>
+
+      {/* Slider de imágenes de empresas y proyectos */}
+      {showProjects && <ProjectsSlider />}
 
       {/* Renderizado condicional del currículum */}
       {showCurriculum && <CurriculumContent />}
