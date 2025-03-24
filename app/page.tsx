@@ -6,10 +6,12 @@ import CurriculumContent from "./curriculum";
 function ProjectsSlider() {
   // Lista de imágenes de empresas y proyectos (ajusta las rutas según corresponda)
   const images = [
-    "/company1.jpg",
-    "/company2.jpg",
-    "/project1.jpg",
-    "/project2.jpg",
+    "/mongo db.png",
+    "/ducaplast.png",
+    "/brain capacity.png",
+    "/prompts.png",
+    "/catalogo.png",
+    "/productos.png",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -104,7 +106,7 @@ export default function Home() {
           onClick={() => setShowProjects(!showProjects)}
           className="hero-btn secondary"
         >
-          {showProjects ? "Hide Projects" : "Ver mocups de projects"}
+          {showProjects ? "Hide Projects" : "View mockups"}
         </button>
       </section>
 
