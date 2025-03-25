@@ -6,8 +6,6 @@ import ProjectsSlider from "./components/ProjectsSlider";
 import ChatBot from "./components/ChatBot";
 import CurriculumContent from "./components/curriculum";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import LoginRegisterButtons from "./components/LoginRegisterButtons";
-import Dashboard from "./components/Dashboard";
 
 export default function Home() {
   const [showCurriculum, setShowCurriculum] = useState(false);
@@ -35,8 +33,6 @@ export default function Home() {
       <LanguageSwitcher currentLanguage={language} onSwitch={handleLanguageSwitch} />
 
       <section className="hero">
-        {/* Muestra Login/Register solo si el usuario no está logueado */}
-        {!loggedInUser && <LoginRegisterButtons onLoginSuccess={handleLoginSuccess} />}
 
         <h1 className="hero-title">
           {language === "es" ? "Bienvenido a mi sitio web" : "Welcome to my website"}
@@ -71,8 +67,6 @@ export default function Home() {
       {/* ChatBot */}
       {showAI && <ChatBot />}
 
-      {/* Dashboard Modal: Se muestra si el usuario está logueado */}
-      {loggedInUser && <Dashboard user={loggedInUser} onClose={closeDashboard} />}
     </div>
   );
 }
