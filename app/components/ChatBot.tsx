@@ -19,7 +19,7 @@ export default function ChatBot() {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: "help" }),
+          body: JSON.stringify({ question: "reset" }),
         });
         if (!res.ok) {
           const errorData = await res.json();
@@ -52,7 +52,7 @@ export default function ChatBot() {
       const data = await res.json();
 
       const lowerQ = userQuestion.trim().toLowerCase();
-      if (lowerQ !== "help" && lowerQ !== "ayuda") {
+      if (lowerQ !== "reset" && lowerQ !== "resetear") {
         setConversationStarted(true);
       }
 

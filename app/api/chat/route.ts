@@ -7,7 +7,41 @@ interface ConversationEntry {
 }
 
 let bot: any;
-let conversationLog: ConversationEntry[] = []; // Almacenamiento temporal en memoria
+let conversationLog: ConversationEntry[] = [];
+
+// Listado único de comandos disponibles
+const availableCommands = [
+  "hello / hi / greetings / hola / buenos días",
+  "what is programming / ¿qué es la programación?",
+  "explain software development / explica el desarrollo de software",
+  "what is full-stack development / ¿qué es el desarrollo full-stack?",
+  "explain object-oriented programming / explica la programación orientada a objetos",
+  "explain functional programming / explica la programación funcional",
+  "what is agile methodology / ¿qué es la metodología ágil?",
+  "explain scrum / explica scrum",
+  "explain kanban / explica kanban",
+  "explain microservices / explica microservicios",
+  "what is cloud computing / ¿qué es cloud computing?",
+  "explain containerization / explica containerización",
+  "what is devops / ¿qué es devops?",
+  "explain cybersecurity / explica ciberseguridad",
+  "what is data science / ¿qué es data science?",
+  "explain machine learning / explica machine learning",
+  "explain deep learning / explica deep learning",
+  "explain big data / explica big data",
+  "explain iot / explica iot",
+  "explain rest apis / explica rest apis",
+  "explain graphql / explica graphql",
+  "explain serverless architecture / explica arquitectura serverless",
+  "explain python / explica python",
+  "explain react / explica react",
+  "explain node / explica node",
+  "explain mongo / explica mongo",
+  "explain sqlite / explica sqlite",
+  "explain django / explica django",
+  "reset / resetear",
+  "help / ayuda"
+];
 
 async function loadBot() {
   if (!bot) {
@@ -15,83 +49,19 @@ async function loadBot() {
     const RiveScriptLib = module.default;
     bot = new RiveScriptLib({ utf8: true });
 
-    // Versión de RiveScript con patrones explícitos y con grupos para variantes
+    // Cargamos las respuestas de RiveScript, quitando los triggers de help/ayuda
     bot.stream(`
       ! version = 2.0
 
-      // =============================
-      // HELP (INGLÉS)
-      // =============================
-      + help
-      - Here are some professional commands you can use:
-      - • hello | hi | greetings: To receive a welcome message.
-      - • help: List available commands.
-      - • what is programming: Explanation about programming fundamentals.
-      - • explain software development: Overview of the software development lifecycle.
-      - • what is full-stack development: Information on full-stack development.
-      - • explain object-oriented programming: Details on OOP concepts.
-      - • explain functional programming: Insights on functional programming paradigms.
-      - • what is agile methodology: Information on agile practices.
-      - • explain scrum: Details on the Scrum framework.
-      - • explain kanban: Insights on the Kanban method.
-      - • explain microservices: Details on microservices architecture.
-      - • what is cloud computing: Overview of cloud computing.
-      - • explain containerization: About containerization with Docker/Kubernetes.
-      - • what is devops: Explanation about DevOps practices.
-      - • explain cybersecurity: Insights on cybersecurity measures.
-      - • what is data science: Overview of data science.
-      - • explain machine learning: Basics of machine learning.
-      - • explain deep learning: Details on deep learning and neural networks.
-      - • explain big data: Information on big data technologies.
-      - • explain iot: Overview of the Internet of Things.
-      - • explain rest apis: Fundamentals of RESTful services.
-      - • explain graphql: Overview of GraphQL as an API query language.
-      - • explain serverless architecture: Information on serverless computing.
-      - • explain python: Overview of Python programming.
-      - • explain react: Overview of the React library.
-      - • explain node: Overview of Node.js.
-      - • explain mongo: Overview of MongoDB.
-      - • explain sqlite: Overview of SQLite.
-      - • explain django: Overview of the Django framework.
+      // RESET (INGLÉS)
+      + reset
+      - Conversation has been reset.
+      
+      // RESET (ESPAÑOL)
+      + resetear
+      - La conversación ha sido reseteada.
 
-      // =============================
-      // HELP (ESPAÑOL)
-      // =============================
-      + ayuda
-      - Aquí tienes algunos comandos profesionales sobre software que puedes utilizar:
-      - • hola: Para recibir un mensaje de bienvenida.
-      - • ayuda: Muestra los comandos disponibles.
-      - • (¿qué|que) es la programación\?: Explicación sobre los fundamentos de la programación.
-      - • explica el desarrollo de software: Visión general del ciclo de vida del desarrollo de software.
-      - • (¿qué|que) es el desarrollo full-stack\?: Información sobre el desarrollo full-stack.
-      - • explica la programación orientada a objetos: Detalles sobre conceptos de POO.
-      - • explica la programación funcional: Perspectivas sobre paradigmas de programación funcional.
-      - • (¿qué|que) es la metodología ágil\?: Información sobre prácticas ágiles.
-      - • explica scrum: Detalles sobre el framework Scrum.
-      - • explica kanban: Información sobre el método Kanban.
-      - • explica microservicios: Detalles sobre la arquitectura de microservicios.
-      - • (¿qué|que) es cloud computing\?: Visión general sobre computación en la nube.
-      - • explica containerización: Información sobre containerización (Docker, Kubernetes).
-      - • (¿qué|que) es devops\?: Explicación sobre prácticas de DevOps.
-      - • explica ciberseguridad: Perspectivas sobre medidas de ciberseguridad.
-      - • (¿qué|que) es data science\?: Visión general sobre data science.
-      - • explica machine learning: Fundamentos del aprendizaje automático.
-      - • explica deep learning: Detalles sobre deep learning y redes neuronales.
-      - • explica big data: Información sobre tecnologías de big data.
-      - • explica iot: Visión general del Internet de las Cosas.
-      - • explica rest apis: Fundamentos de servicios RESTful.
-      - • explica graphql: Visión general sobre GraphQL.
-      - • explica arquitectura serverless: Información sobre computación sin servidor.
-      - • explica python: Visión general sobre el lenguaje Python.
-      - • explica react: Visión general sobre la biblioteca React.
-      - • explica node: Visión general sobre Node.js.
-      - • explica mongo: Visión general sobre MongoDB.
-      - • explica sqlite: Visión general sobre SQLite.
-      - • explica django: Visión general sobre el framework Django.
-
-      // =============================
       // SALUDOS (INGLÉS)
-      // =============================
       + hello
       - Hi there! How can I assist you with your software and technology inquiries today?
       + hi
@@ -99,9 +69,7 @@ async function loadBot() {
       + greetings
       - Hi there! How can I assist you today?
 
-      // =============================
       // SALUDOS (ESPAÑOL)
-      // =============================
       + hola
       - ¡Hola! ¿En qué tema de software o tecnología te puedo ayudar?
       + buenos días
@@ -109,17 +77,13 @@ async function loadBot() {
       + buenos dias
       - ¡Buenos días! ¿Listo para profundizar en desarrollo de software, arquitecturas o tecnologías emergentes?
 
-      // =============================
       // DESPEDIDAS
-      // =============================
       + bye
       - Goodbye! Happy coding!
       + adiós
       - ¡Adiós! ¡Que tengas un excelente día programando!
 
-      // =============================
       // PREGUNTAS SOBRE PROGRAMACIÓN (INGLÉS)
-      // =============================
       + what is programming
       - Programming is the process of creating instructions for computers using various languages and paradigms. It forms the foundation of all software development.
       
@@ -135,9 +99,7 @@ async function loadBot() {
       + explain functional programming
       - Functional programming is a paradigm that treats computation as the evaluation of mathematical functions and avoids changing state.
 
-      // =============================
       // PREGUNTAS SOBRE TECNOLOGÍA (INGLÉS)
-      // =============================
       + what is agile methodology
       - Agile methodology is an iterative approach to software development that values flexibility, collaboration, and customer feedback.
       
@@ -186,9 +148,7 @@ async function loadBot() {
       + explain serverless architecture
       - Serverless architecture allows developers to build and run applications without managing servers, as the cloud provider handles scaling and infrastructure.
 
-      // =============================
       // PREGUNTAS SOBRE PROGRAMACIÓN (ESPAÑOL)
-      // =============================
       + (¿qué|que) es la programación\?
       - La programación es el proceso de crear instrucciones para que las computadoras realicen tareas utilizando diversos lenguajes y paradigmas. Es la base del desarrollo de software.
       
@@ -204,9 +164,7 @@ async function loadBot() {
       + explica la programación funcional
       - La programación funcional es un paradigma que trata la computación como la evaluación de funciones matemáticas, evitando estados mutables.
 
-      // =============================
       // PREGUNTAS SOBRE TECNOLOGÍA (ESPAÑOL)
-      // =============================
       + (¿qué|que) es la metodología ágil\?
       - La metodología ágil es un enfoque iterativo en el desarrollo de software que prioriza la flexibilidad, la colaboración y la retroalimentación del cliente.
       
@@ -255,9 +213,7 @@ async function loadBot() {
       + explica arquitectura serverless
       - La arquitectura serverless permite desarrollar y ejecutar aplicaciones sin preocuparse por la administración de servidores, ya que la infraestructura es gestionada automáticamente por el proveedor en la nube.
 
-      // =============================
       // NUEVOS COMANDOS SOBRE TECNOLOGÍAS MODERNAS (INGLÉS)
-      // =============================
       + explain python
       - Python is a high-level, interpreted programming language known for its readability, versatility, and extensive libraries. It's widely used for web development, data science, automation, and more.
       
@@ -276,9 +232,7 @@ async function loadBot() {
       + explain django
       - Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. It provides an admin interface and many built-in features.
 
-      // =============================
       // NUEVOS COMANDOS SOBRE TECNOLOGÍAS MODERNAS (ESPAÑOL)
-      // =============================
       + explica python
       - Python es un lenguaje de programación de alto nivel, interpretado y conocido por su legibilidad y versatilidad. Se utiliza ampliamente para desarrollo web, ciencia de datos, automatización y más.
       
@@ -296,12 +250,6 @@ async function loadBot() {
       
       + explica django
       - Django es un framework web de alto nivel para Python que fomenta el desarrollo rápido y un diseño limpio y pragmático. Proporciona una interfaz administrativa y muchas funcionalidades integradas.
-
-      // =============================
-      // FALLBACK
-      // =============================
-      + *
-      -  Please ask a specific command of the available list
     `);
 
     await bot.sortReplies();
@@ -312,57 +260,46 @@ export async function POST(request: Request) {
   try {
     const { question } = await request.json();
     await loadBot();
-
     const lowerQ = question.trim().toLowerCase();
-    // Reiniciamos el historial solo para "help" o "ayuda" exactos
-    if (lowerQ === "help" || lowerQ === "ayuda") {
+
+    // Si se recibe "reset" o "resetear", se limpia el historial y se retorna el mensaje sin agregar entrada
+    if (lowerQ === "reset" || lowerQ === "resetear") {
       conversationLog = [];
-    }
-
-    const reply = await bot.reply("local-user", question);
-
-    // Solo guardamos en el historial si la pregunta no es de ayuda
-    if (lowerQ !== "help" && lowerQ !== "ayuda") {
-      conversationLog.push({
-        user: "User",
-        question,
-        reply,
+      const resetMsg = lowerQ === "reset"
+        ? "Conversation has been reset."
+        : "La conversación ha sido reseteada.";
+      return NextResponse.json({
+        reply: resetMsg,
+        availableCommands,
+        conversationLog,
       });
     }
 
+    // Para "help" o "ayuda", se retorna un mensaje fijo sin procesar a través de RiveScript
+    if (lowerQ === "help" || lowerQ === "ayuda") {
+      const helpMsg = "escribe algunos de los comandos disponibles.";
+      conversationLog.push({
+        user: "User",
+        question,
+        reply: helpMsg,
+      });
+      return NextResponse.json({
+        reply: helpMsg,
+        availableCommands,
+        conversationLog,
+      });
+    }
+
+    // Para cualquier otro comando, se obtiene la respuesta de RiveScript y se agrega al historial
+    const reply = await bot.reply("local-user", question);
+    conversationLog.push({
+      user: "User",
+      question,
+      reply,
+    });
     return NextResponse.json({
       reply,
-      availableCommands: [
-        "hello / hi / greetings / hola / buenos días",
-        "help / ayuda",
-        "what is programming / ¿qué es la programación?",
-        "explain software development / explica el desarrollo de software",
-        "what is full-stack development / ¿qué es el desarrollo full-stack?",
-        "explain object-oriented programming / explica la programación orientada a objetos",
-        "explain functional programming / explica la programación funcional",
-        "what is agile methodology / ¿qué es la metodología ágil?",
-        "explain scrum / explica scrum",
-        "explain kanban / explica kanban",
-        "explain microservices / explica microservicios",
-        "what is cloud computing / ¿qué es cloud computing?",
-        "explain containerization / explica containerización",
-        "what is devops / ¿qué es devops?",
-        "explain cybersecurity / explica ciberseguridad",
-        "what is data science / ¿qué es data science?",
-        "explain machine learning / explica machine learning",
-        "explain deep learning / explica deep learning",
-        "explain big data / explica big data",
-        "explain iot / explica iot",
-        "explain rest apis / explica rest apis",
-        "explain graphql / explica graphql",
-        "explain serverless architecture / explica arquitectura serverless",
-        "explain python / explica python",
-        "explain react / explica react",
-        "explain node / explica node",
-        "explain mongo / explica mongo",
-        "explain sqlite / explica sqlite",
-        "explain django / explica django",
-      ],
+      availableCommands,
       conversationLog,
     });
   } catch (error: any) {
