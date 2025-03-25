@@ -52,8 +52,8 @@ export default function Home() {
 
         <button onClick={() => setShowAI(!showAI)} className="hero-btn ai-btn">
           {showAI
-            ? language === "es" ? "Cerrar AI" : "Close AI"
-            : language === "es" ? "Preguntar a AI" : "Ask AI"}
+            ? language === "es" ? "Cerrar ChatBot" : "Close Chatbot"
+            : language === "es" ? "Preguntar a ChatBot" : "Ask ChatBot"}
         </button>
       </section>
 
