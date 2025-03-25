@@ -1,24 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/db"; // Asegúrate de que la ruta es correcta
+import { connectDB } from "@/lib/db";
 import User from "@/models/user";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
-
-    // Validaciones básicas
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Faltan datos (email y password)" },
+        { error: "Todos los campos son obligatorios" },
         { status: 400 }
       );
     }
-
-    // Conectar a la base de datos
     await connectDB();
-
-    // Buscar el usuario
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json(
@@ -26,26 +20,21 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    // Comparar la contraseña ingresada con la almacenada (hasheada)
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return NextResponse.json(
         { error: "Contraseña incorrecta" },
         { status: 401 }
       );
     }
-
-    // Aquí podrías generar un JWT o establecer una sesión/cookie
-    // Por simplicidad, solo devolvemos un mensaje de éxito
     return NextResponse.json(
-      { message: "Inicio de sesión exitoso" },
+      { message: "Inicio de sesión exitoso", userId: user._id.toString(), name: user.name },
       { status: 200 }
     );
   } catch (error: any) {
-    console.error(error);
+    console.error("Error en /api/auth/login:", error);
     return NextResponse.json(
-      { error: "Error al iniciar sesión" },
+      { error: "Error al iniciar sesión: " + error.message },
       { status: 500 }
     );
   }

@@ -16,7 +16,6 @@ const UserSchema = new Schema({
   },
 });
 
-// Evitamos redeclarar el modelo si ya existe
+// Evita redeclarar el modelo en entornos con hot-reload
 const User = models.User || model("User", UserSchema);
-
 export default User;
