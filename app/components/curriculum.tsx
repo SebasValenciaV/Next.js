@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import { FaLinkedin, FaGithub, FaBloggerB } from "react-icons/fa";
 
-export default function CurriculumContent() {
+type CurriculumContentProps = {
+  language: string;
+};
+
+export default function CurriculumContent({ language }: CurriculumContentProps) {
   return (
     <div className="curriculum-container">
       <div className="curriculum-grid">
@@ -19,7 +25,9 @@ export default function CurriculumContent() {
           {/* Contenedor de iconos y título */}
           <div className="header-extra">
             <p className="profile-description">
-              FullStack Developer | Expert in React, Next.js, Node.js, and More
+              {language === "es"
+                ? "Desarrollador FullStack | Experto en React, Next.js, Node.js y Más"
+                : "FullStack Developer | Expert in React, Next.js, Node.js, and More"}
             </p>
             <div className="social-icons-header">
               <a
@@ -52,69 +60,95 @@ export default function CurriculumContent() {
 
         {/* INTRODUCTION */}
         <div className="curriculum-section">
-          <h2 className="section-title">Introduction</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Introducción" : "Introduction"}
+          </h2>
           <p className="section-text">
-            Expert in coding with proficiency in various languages such as Python,
-            PHP, C++, C#, and JavaScript, and in frameworks such as Next.js, React.js,
-            Node.js, and Vite. A solid foundation in data structures, algorithms,
-            and software architectures, combined with agile methodologies, enables me to
-            efficiently solve complex challenges. Proficient in both back-end and front-end
-            design, I optimize software solutions through secure coding practices.
-            I have experience in systems administration, technology management, and website
-            development. My exceptional leadership skills allow me to effectively organize
-            tasks and coordinate teams or departments to successfully complete projects
-            across diverse market and real-life environments.
-            Additionally, I have practical experience developing AI prompts that guide models to
-            deliver improved accuracy, instruction following, creativity, writing quality, and
-            reasoning.
+            {language === "es"
+              ? `Experto en codificación con dominio de diversos lenguajes como Python, PHP, C++, C# y JavaScript, y en frameworks como Next.js, React.js, Node.js y Vite. 
+Con una sólida base en estructuras de datos, algoritmos y arquitecturas de software, combinada con metodologías ágiles, resuelvo desafíos complejos de manera eficiente. 
+Competente en el diseño tanto de back-end como de front-end, optimizo soluciones de software mediante prácticas de codificación seguras. 
+Cuento con experiencia en administración de sistemas, gestión tecnológica y desarrollo de sitios web. 
+Mis excepcionales habilidades de liderazgo me permiten organizar tareas y coordinar equipos o departamentos para completar con éxito proyectos en diversos mercados y entornos reales. 
+Además, tengo experiencia práctica en el desarrollo de prompts de IA que guían a los modelos para ofrecer una mayor precisión, seguimiento de instrucciones, creatividad, calidad en la escritura y razonamiento.`
+              : `Expert in coding with proficiency in various languages such as Python, PHP, C++, C#, and JavaScript, and in frameworks such as Next.js, React.js, Node.js, and Vite. 
+A solid foundation in data structures, algorithms, and software architectures, combined with agile methodologies, enables me to efficiently solve complex challenges. 
+Proficient in both back-end and front-end design, I optimize software solutions through secure coding practices. 
+I have experience in systems administration, technology management, and website development. 
+My exceptional leadership skills allow me to effectively organize tasks and coordinate teams or departments to successfully complete projects across diverse market and real-life environments. 
+Additionally, I have practical experience developing AI prompts that guide models to deliver improved accuracy, instruction following, creativity, writing quality, and reasoning.`}
           </p>
         </div>
 
         {/* PROFESSIONAL EXPERIENCE */}
         <div className="curriculum-section">
-          <h2 className="section-title">Professional Experience</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Experiencia Profesional" : "Professional Experience"}
+          </h2>
           <ul className="section-list">
             <li>
-              <strong>Avianca Holdings</strong> – Aircraft Maintenance Technician{" "}
+              <strong>Avianca Holdings</strong> –{" "}
+              {language === "es"
+                ? "Técnico de Mantenimiento de Aeronaves"
+                : "Aircraft Maintenance Technician"}{" "}
               <em>(Sep 2018 – Mar 2020)</em>
               <br />
-              Responsible for inspections, repairs, and component installations on
-              commercial and private aircraft, collaborating with the team to
-              deliver high-quality results.
+              {language === "es"
+                ? "Responsable de inspecciones, reparaciones e instalaciones de componentes en aeronaves comerciales y privadas, colaborando con el equipo para obtener resultados de alta calidad."
+                : "Responsible for inspections, repairs, and component installations on commercial and private aircraft, collaborating with the team to deliver high-quality results."}
             </li>
             <li>
-              <strong>Granity Entertainment DAC</strong> – Webmaster &amp; Technical
-              Support <em>(Jun 2023 – Nov 2024)</em>
+              <strong>Granity Entertainment DAC</strong> –{" "}
+              {language === "es"
+                ? "Webmaster y Soporte Técnico"
+                : "Webmaster & Technical Support"}{" "}
+              <em>(Jun 2023 – Nov 2024)</em>
               <br />
-              Specialized in technical support, problem resolution, and ensuring
-              security and efficiency in multiple languages (French, English,
-              Portuguese, German, Russian, Italian, Dutch).
+              {language === "es"
+                ? "Especializado en soporte técnico, resolución de problemas y en garantizar la seguridad y eficiencia en múltiples idiomas (Francés, Inglés, Portugués, Alemán, Ruso, Italiano, Neerlandés)."
+                : "Specialized in technical support, problem resolution, and ensuring security and efficiency in multiple languages (French, English, Portuguese, German, Russian, Italian, Dutch)."}
             </li>
             <li>
-              <strong>Ducaplast Sas</strong> – FullStack Developer{" "}
+              <strong>Ducaplast Sas</strong> –{" "}
+              {language === "es" ? "FullStack Developer" : "FullStack Developer"}{" "}
               <em>(Jun 2024 – Nov 2024)</em>
               <br />
-              Developed an e-commerce platform (
-              <a
-                href="https://ducaplast.com.co/"
-                target="_blank"
-                rel="noreferrer"
-                className="link"
-              >
-                ducaplast.com.co
-              </a>
-              ) using Python and Django (SQLite for development, PostgreSQL in
-              production) and HTML, JavaScript and CSS, Bootstrap for a responsive
-              front-end.
+              {language === "es"
+                ? <>Desarrolló una plataforma de e-commerce (
+                  <a
+                    href="https://ducaplast.com.co/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link"
+                  >
+                    ducaplast.com.co
+                  </a>
+                  ) utilizando Python y Django (SQLite para desarrollo, PostgreSQL en producción) y HTML, JavaScript, CSS y Bootstrap para un front-end responsivo.</>
+                : <>Developed an e-commerce platform (
+                  <a
+                    href="https://ducaplast.com.co/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link"
+                  >
+                    ducaplast.com.co
+                  </a>
+                  ) using Python and Django (SQLite for development, PostgreSQL in production) and HTML, JavaScript, CSS, and Bootstrap for a responsive front-end.</>}
             </li>
           </ul>
         </div>
 
         {/* PROJECTS & FREELANCE */}
         <div className="curriculum-section">
-          <h2 className="section-title">Projects &amp; Freelance</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Proyectos y Freelance" : "Projects & Freelance"}
+          </h2>
           <ul className="section-list">
-            <li>Object-Oriented Programming games (55 Hrs, 2023)</li>
+            <li>
+              {language === "es"
+                ? "Juegos de Programación Orientada a Objetos (55 Hrs, 2023)"
+                : "Object-Oriented Programming games (55 Hrs, 2023)"}
+            </li>
           </ul>
           <p className="section-text">
             <strong>GitHub:</strong>{" "}
@@ -128,7 +162,7 @@ export default function CurriculumContent() {
             </a>
           </p>
           <p className="section-text">
-            <strong>Blog:</strong>{" "}
+            <strong>{language === "es" ? "Blog:" : "Blog:"} </strong>
             <a
               href="https://developersebastianvalencia.blogspot.com"
               target="_blank"
@@ -142,55 +176,64 @@ export default function CurriculumContent() {
 
         {/* SKILLS */}
         <div className="curriculum-section">
-          <h2 className="section-title">Skills</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Habilidades" : "Skills"}
+          </h2>
           <p className="section-text">
-            JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js,
-            Vite, HTML, CSS/Bootstrap, Django, SQL, Agile methodologies, data structures,
-            algorithms, secure coding, and systems administration.
+            {language === "es"
+              ? "JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js, Vite, HTML, CSS/Bootstrap, Django, SQL, metodologías ágiles, estructuras de datos, algoritmos, codificación segura y administración de sistemas."
+              : "JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js, Vite, HTML, CSS/Bootstrap, Django, SQL, Agile methodologies, data structures, algorithms, secure coding, and systems administration."}
           </p>
         </div>
 
         {/* EDUCATION & COURSES */}
         <div className="curriculum-section">
-          <h2 className="section-title">Education &amp; Courses</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Educación y Cursos" : "Education & Courses"}
+          </h2>
           <ul className="section-list">
             <li>
-              <strong>Institución Universitaria Pascual Bravo</strong> – Software
-              Developer (2020 – 2024)
+              <strong>Institución Universitaria Pascual Bravo</strong> –{" "}
+              {language === "es" ? "Desarrollador de Software (2020 – 2024)" : "Software Developer (2020 – 2024)"}
             </li>
             <li>
-              <strong>Colegio La Salle Medellín</strong> – High School Diploma (2008 –
-              2015)
+              <strong>Colegio La Salle Medellín</strong> –{" "}
+              {language === "es" ? "Diploma de Educación Media (2008 – 2015)" : "High School Diploma (2008 – 2015)"}
             </li>
             <li>
-              <strong>Academia Antioqueña de Aviación</strong> – Aircraft Maintenance
-              Technician (2016 – 2020)
+              <strong>Academia Antioqueña de Aviación</strong> –{" "}
+              {language === "es" ? "Técnico en Mantenimiento de Aeronaves (2016 – 2020)" : "Aircraft Maintenance Technician (2016 – 2020)"}
             </li>
             <li>
-              <strong>I.E Pascual Bravo</strong> – Information Security / IT Essentials
-              (50 Hrs, 2024)
+              <strong>I.E Pascual Bravo</strong> –{" "}
+              {language === "es" ? "Seguridad Informática / IT Essentials (50 Hrs, 2024)" : "Information Security / IT Essentials (50 Hrs, 2024)"}
             </li>
             <li>
-              <strong>Udemy</strong> – Front and Backend Web Development (38 Hrs, 2024)
+              <strong>Udemy</strong> –{" "}
+              {language === "es" ? "Desarrollo Web Frontend y Backend (38 Hrs, 2024)" : "Front and Backend Web Development (38 Hrs, 2024)"}
             </li>
             <li>
-              <strong>Eafit University</strong> – English lvl B2 writting, reading &amp;
-              speaking (3 years 2013, 2026)
+              <strong>Eafit University</strong> –{" "}
+              {language === "es"
+                ? "Inglés lvl B2: escritura, lectura y conversación (3 años 2013, 2026)"
+                : "English lvl B2: writing, reading & speaking (3 years 2013, 2026)"}
             </li>
           </ul>
         </div>
 
         {/* CONTACT */}
         <div className="curriculum-section">
-          <h2 className="section-title">Contact</h2>
+          <h2 className="section-title">
+            {language === "es" ? "Contacto" : "Contact"}
+          </h2>
           <p className="section-text">
-            <strong>Email:</strong>{" "}
+            <strong>{language === "es" ? "Correo:" : "Email:"} </strong>
             <a href="mailto:sebas19-98@hotmail.com" className="link">
               sebas19-98@hotmail.com
             </a>
           </p>
           <p className="section-text">
-            <strong>Phone:</strong> (+57) 316 8859466
+            <strong>{language === "es" ? "Teléfono:" : "Phone:"} </strong>(+57) 316 8859466
           </p>
         </div>
       </div>

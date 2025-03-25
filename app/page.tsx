@@ -33,7 +33,6 @@ export default function Home() {
       <LanguageSwitcher currentLanguage={language} onSwitch={handleLanguageSwitch} />
 
       <section className="hero">
-
         <h1 className="hero-title">
           {language === "es" ? "Bienvenido a mi sitio web" : "Welcome to my website"}
         </h1>
@@ -62,11 +61,10 @@ export default function Home() {
       {showProjects && <ProjectsSlider />}
 
       {/* Renderizado condicional del currículum */}
-      {showCurriculum && <CurriculumContent />}
+      {showCurriculum && <CurriculumContent language={language} />}
 
       {/* ChatBot */}
       {showAI && <ChatBot />}
-
     </div>
   );
 }
