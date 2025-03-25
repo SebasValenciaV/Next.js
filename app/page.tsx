@@ -11,6 +11,7 @@ export default function Home() {
   const [showCurriculum, setShowCurriculum] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [showAI, setShowAI] = useState(false);
+  const [showMusic, setShowMusic] = useState(false);
   const [language, setLanguage] = useState("en");
   const [loggedInUser, setLoggedInUser] = useState<{ userId: string; name: string } | null>(null);
 
@@ -55,6 +56,13 @@ export default function Home() {
             ? language === "es" ? "Cerrar ChatBot" : "Close Chatbot"
             : language === "es" ? "Preguntar a ChatBot" : "Ask ChatBot"}
         </button>
+
+        {/* Botón para reproducir música */}
+        <button onClick={() => setShowMusic(!showMusic)} className="hero-btn music-btn">
+          {showMusic
+            ? language === "es" ? "Detener Música" : "Stop Music"
+            : language === "es" ? "Escuchar Música" : "Play Music"}
+        </button>
       </section>
 
       {/* Slider de imágenes */}
@@ -65,6 +73,22 @@ export default function Home() {
 
       {/* ChatBot */}
       {showAI && <ChatBot />}
+
+      {/* Reproductor de Música */}
+      {showMusic && (
+        <div className="music-player">
+          <iframe
+            style={{ borderRadius: "12px" }}
+            src="https://open.spotify.com/embed/playlist/5H2dELk8SnXpP6H10I4kS3?utm_source=generator&theme=0&autoplay=1"
+            width="100%"
+            height="352"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify Playlist"
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 }
