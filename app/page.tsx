@@ -57,11 +57,10 @@ export default function Home() {
             : language === "es" ? "Preguntar a ChatBot" : "Ask ChatBot"}
         </button>
 
-        {/* Botón para reproducir música */}
         <button onClick={() => setShowMusic(!showMusic)} className="hero-btn music-btn">
           {showMusic
-            ? language === "es" ? "Detener Música" : "Stop Music"
-            : language === "es" ? "Escuchar Música" : "Play Music"}
+            ? language === "es" ? "Ocultar Música" : "Hide Music"
+            : language === "es" ? "Reproducir Música" : "Play Music"}
         </button>
       </section>
 
@@ -74,18 +73,41 @@ export default function Home() {
       {/* ChatBot */}
       {showAI && <ChatBot />}
 
-      {/* Reproductor de Música */}
+      {/* Sección de Música */}
       {showMusic && (
-        <div className="music-player">
+        <div className="music-section">
           <iframe
             style={{ borderRadius: "12px" }}
-            src="https://open.spotify.com/embed/playlist/5H2dELk8SnXpP6H10I4kS3?utm_source=generator&theme=0&autoplay=1"
+            src="https://open.spotify.com/embed/playlist/5H2dELk8SnXpP6H10I4kS3?utm_source=generator&theme=0"
             width="100%"
-            height="352"
+            height="152"
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
             loading="lazy"
-            title="Spotify Playlist"
+            title="Spotify Playlist Compact"
+          ></iframe>
+          <iframe
+            style={{ borderRadius: "12px", marginTop: "10px" }}
+            src="https://open.spotify.com/embed/playlist/6zNLCtZDI4Hccoo7VZabZs?utm_source=generator&theme=0"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            title="Spotify Playlist Second"
+          ></iframe>
+          <iframe
+            style={{ borderRadius: "12px", marginTop: "10px" }}
+            src="https://open.spotify.com/embed/playlist/6OxjwWV1kyXDIkoyD0Yzcw?utm_source=generator"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            title="Spotify Playlist Third"
           ></iframe>
         </div>
       )}
