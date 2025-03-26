@@ -6,7 +6,7 @@ import ProjectsSlider from "./components/ProjectsSlider";
 import ChatBot from "./components/ChatBot";
 import CurriculumContent from "./components/curriculum";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import MusicSection from "./components/Music"; // Importa el componente de música
+import MusicSection from "./components/Music";
 
 export default function Home() {
   const [showCurriculum, setShowCurriculum] = useState(false);
@@ -62,6 +62,14 @@ export default function Home() {
           {showMusic
             ? language === "es" ? "Ocultar Música" : "Hide Music"
             : language === "es" ? "Reproducir Música" : "Play Music"}
+        </button>
+
+        {/* Botón de Registro/ Register */}
+        <button
+          onClick={() => window.location.href = "https://sesion-three.vercel.app/"}
+          className="hero-btn redirect-btn"
+        >
+          {language === "es" ? "Registro" : "Register"}
         </button>
       </section>
 
