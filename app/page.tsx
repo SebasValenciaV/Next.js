@@ -69,7 +69,7 @@ export default function Home() {
           onClick={() => window.location.href = "https://sesion-three.vercel.app/"}
           className="hero-btn redirect-btn"
         >
-          {language === "es" ? "Registro" : "Register"}
+          {language === "es" ? "Nueva plataforma" : "New platform"}
         </button>
       </section>
 
