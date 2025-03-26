@@ -6,6 +6,7 @@ import ProjectsSlider from "./components/ProjectsSlider";
 import ChatBot from "./components/ChatBot";
 import CurriculumContent from "./components/curriculum";
 import LanguageSwitcher from "./components/LanguageSwitcher";
+import MusicSection from "./components/Music"; // Importa el componente de música
 
 export default function Home() {
   const [showCurriculum, setShowCurriculum] = useState(false);
@@ -74,43 +75,7 @@ export default function Home() {
       {showAI && <ChatBot />}
 
       {/* Sección de Música */}
-      {showMusic && (
-        <div className="music-section">
-          <iframe
-            style={{ borderRadius: "12px" }}
-            src="https://open.spotify.com/embed/playlist/5H2dELk8SnXpP6H10I4kS3?utm_source=generator&theme=0"
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            title="Spotify Playlist Compact"
-          ></iframe>
-          <iframe
-            style={{ borderRadius: "12px", marginTop: "10px" }}
-            src="https://open.spotify.com/embed/playlist/6zNLCtZDI4Hccoo7VZabZs?utm_source=generator&theme=0"
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            title="Spotify Playlist Second"
-          ></iframe>
-          <iframe
-            style={{ borderRadius: "12px", marginTop: "10px" }}
-            src="https://open.spotify.com/embed/playlist/6OxjwWV1kyXDIkoyD0Yzcw?utm_source=generator"
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            title="Spotify Playlist Third"
-          ></iframe>
-        </div>
-      )}
+      {showMusic && <MusicSection />}
     </div>
   );
 }
