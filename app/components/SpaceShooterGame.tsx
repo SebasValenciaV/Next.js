@@ -41,7 +41,7 @@ export default function SpaceDodgerGame() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [paused, setPaused] = useState(false);
-  // Se conservan las indicaciones para PC
+  // Indicaciones para PC se conservan
   const [selectedWeapon, setSelectedWeapon] = useState<"normal" | "spread" | "laser">("normal");
   const [resetGame, setResetGame] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
@@ -95,7 +95,7 @@ export default function SpaceDodgerGame() {
     let lastTapTime = 0;
     const tapDelay = 300; // ms para considerar taps consecutivos
 
-    // Función de disparo unificada (se usa también desde teclado)
+    // Función de disparo unificada (también se usa desde teclado)
     const shootShot = (weaponType: "normal" | "spread" | "laser") => {
       if (!canShoot) return;
       if (weaponType === "normal") {
@@ -133,7 +133,24 @@ export default function SpaceDodgerGame() {
       }, 300);
     };
 
-    // Manejo de taps: acumula taps y dispara según 1, 2 o 3 toques
+    // Variables para el seguimiento táctil fluido
+    // Se guarda la posición objetivo de la nave y se interpola en cada ciclo
+    const smoothingFactor = 0.2;
+    let targetPosition = { x: baseWidth / 2, y: baseHeight - 120 };
+
+    // Actualiza la posición objetivo al tocar (touchstart y touchmove)
+    const updateSpaceshipPosition = (e: TouchEvent) => {
+      if (e.touches.length > 1) return;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      targetPosition.x = touch.clientX - rect.left;
+      targetPosition.y = touch.clientY - rect.top;
+    };
+
+    canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
+    canvas.addEventListener("touchmove", updateSpaceshipPosition, { passive: false });
+
+    // Manejo de taps para disparar (sin afectar el movimiento)
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault();
       const currentTime = Date.now();
@@ -158,19 +175,6 @@ export default function SpaceDodgerGame() {
     };
 
     canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
-
-    // Manejo táctil mejorado: se usa touchstart y touchmove para mover la nave
-    const updateSpaceshipPosition = (e: TouchEvent) => {
-      // Si hay más de un toque, se ignora para evitar conflictos
-      if (e.touches.length > 1) return;
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
-      spaceship.x = touch.clientX - rect.left;
-      spaceship.y = touch.clientY - rect.top;
-    };
-
-    canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
-    canvas.addEventListener("touchmove", updateSpaceshipPosition, { passive: false });
 
     // Generar estrellas de fondo
     const numStars = 100;
@@ -365,7 +369,13 @@ export default function SpaceDodgerGame() {
         return;
       }
 
-      // Movimiento por teclado (PC)
+      // En dispositivos con capacidad táctil se interpola la posición de la nave
+      if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+        spaceship.x += (targetPosition.x - spaceship.x) * smoothingFactor;
+        spaceship.y += (targetPosition.y - spaceship.y) * smoothingFactor;
+      }
+
+      // Movimiento con teclado (para PC)
       if (keys["ArrowLeft"] && spaceship.x - spaceship.width / 2 > 0) {
         spaceship.x -= spaceship.speed;
       }
@@ -385,7 +395,7 @@ export default function SpaceDodgerGame() {
         spaceship.y += keys["ArrowDown"] ? spaceship.speed * 0.8 : 0;
       }
 
-      // Disparo con "x" (método teclado) usa la arma seleccionada
+      // Disparo con "x" (método teclado)
       if (keys["x"] && canShoot) {
         shootShot(selectedWeapon);
       }
@@ -416,7 +426,7 @@ export default function SpaceDodgerGame() {
         obs.y += obs.speed;
         drawObstacle(obs);
 
-        // Colisión nave-obstáculo (apróx. circular)
+        // Colisión nave-obstáculo (aproximación circular)
         const dx = spaceship.x - obs.x;
         const dy = spaceship.y - obs.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
