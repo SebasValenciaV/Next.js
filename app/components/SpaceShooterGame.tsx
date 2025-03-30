@@ -41,7 +41,7 @@ export default function SpaceDodgerGame() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [paused, setPaused] = useState(false);
-  // Se sigue usando selectedWeapon para otros controles (teclado)
+  // Se conservan las indicaciones para PC
   const [selectedWeapon, setSelectedWeapon] = useState<"normal" | "spread" | "laser">("normal");
   const [resetGame, setResetGame] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
@@ -95,7 +95,7 @@ export default function SpaceDodgerGame() {
     let lastTapTime = 0;
     const tapDelay = 300; // ms para considerar taps consecutivos
 
-    // Función de disparo unificada (también se puede invocar desde teclado)
+    // Función de disparo unificada (se usa también desde teclado)
     const shootShot = (weaponType: "normal" | "spread" | "laser") => {
       if (!canShoot) return;
       if (weaponType === "normal") {
@@ -133,7 +133,7 @@ export default function SpaceDodgerGame() {
       }, 300);
     };
 
-    // Manejo de taps: si no se mueve demasiado el dedo, se considera un tap y se acumula
+    // Manejo de taps: acumula taps y dispara según 1, 2 o 3 toques
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault();
       const currentTime = Date.now();
@@ -143,7 +143,6 @@ export default function SpaceDodgerGame() {
         tapCount = 1;
       }
       lastTapTime = currentTime;
-      // Usamos setTimeout para esperar a ver si hay más taps
       setTimeout(() => {
         if (Date.now() - lastTapTime >= tapDelay) {
           if (tapCount === 1) {
@@ -160,19 +159,18 @@ export default function SpaceDodgerGame() {
 
     canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
 
-    // Mover la nave con touchmove (más preciso)
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-      // Si hay más de un toque, se ignora para no confundir con taps
+    // Manejo táctil mejorado: se usa touchstart y touchmove para mover la nave
+    const updateSpaceshipPosition = (e: TouchEvent) => {
+      // Si hay más de un toque, se ignora para evitar conflictos
       if (e.touches.length > 1) return;
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
-      const touchX = touch.clientX - rect.left;
-      const touchY = touch.clientY - rect.top;
-      spaceship.x = touchX;
-      spaceship.y = touchY;
+      spaceship.x = touch.clientX - rect.left;
+      spaceship.y = touch.clientY - rect.top;
     };
-    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
+    canvas.addEventListener("touchmove", updateSpaceshipPosition, { passive: false });
 
     // Generar estrellas de fondo
     const numStars = 100;
@@ -367,7 +365,7 @@ export default function SpaceDodgerGame() {
         return;
       }
 
-      // Movimiento con teclado (para escritorio)
+      // Movimiento por teclado (PC)
       if (keys["ArrowLeft"] && spaceship.x - spaceship.width / 2 > 0) {
         spaceship.x -= spaceship.speed;
       }
@@ -387,9 +385,8 @@ export default function SpaceDodgerGame() {
         spaceship.y += keys["ArrowDown"] ? spaceship.speed * 0.8 : 0;
       }
 
-      // Disparo con "x" (método por teclado) usa la arma seleccionada
+      // Disparo con "x" (método teclado) usa la arma seleccionada
       if (keys["x"] && canShoot) {
-        // Se respeta selectedWeapon para disparos desde teclado
         shootShot(selectedWeapon);
       }
 
@@ -477,12 +474,14 @@ export default function SpaceDodgerGame() {
     return () => {
       document.removeEventListener("keydown", keyDownHandler, false);
       document.removeEventListener("keyup", keyUpHandler, false);
-      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchstart", updateSpaceshipPosition);
+      canvas.removeEventListener("touchmove", updateSpaceshipPosition);
       canvas.removeEventListener("touchend", handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, [gameStarted, selectedWeapon, paused, resetGame]);
 
+  // Nombres y colores para estadísticas
   const designNames: { [key: number]: { name: string; color: string } } = {
     0: { name: "Azul", color: "#a0c8ff" },
     1: { name: "Amarillo", color: "#ffddaa" },
@@ -518,7 +517,7 @@ export default function SpaceDodgerGame() {
             style={{
               padding: "6px 10px",
               marginRight: "10px",
-              background: "#0077cc",
+              background: "rgba(0, 119, 204, 0.6)",
               color: "white",
               border: "none",
               cursor: "pointer",
@@ -531,7 +530,7 @@ export default function SpaceDodgerGame() {
             onClick={restartGame}
             style={{
               padding: "6px 10px",
-              background: "#cc0000",
+              background: "rgba(204, 0, 0, 0.6)",
               color: "white",
               border: "none",
               cursor: "pointer",
@@ -561,12 +560,16 @@ export default function SpaceDodgerGame() {
           }}
         >
           <h2 style={{ fontSize: "28px", marginBottom: "20px" }}>SPACE DODGER</h2>
-          <p style={{ marginBottom: "10px" }}>Usa las flechas para mover la nave.</p>
           <p style={{ marginBottom: "10px" }}>
-            En móvil: arrastra para mover y toca 1, 2 o 3 veces para disparar.
+            Para PC: Usa las flechas para mover la nave, "z" para impulso extra y "x" para disparar.
+          </p>
+          <p style={{ marginBottom: "10px" }}>
+            Para móvil: Arrastra para mover la nave y toca 1, 2 o 3 veces para disparar.
           </p>
           <div style={{ margin: "20px" }}>
-            <span style={{ marginRight: "10px" }}>Elige tu armamento (para teclado):</span>
+            <span style={{ marginRight: "10px" }}>
+              Elige tu armamento (para teclado):
+            </span>
             <button
               onClick={() => setSelectedWeapon("normal")}
               style={{
@@ -661,7 +664,7 @@ export default function SpaceDodgerGame() {
             style={{
               padding: "10px 20px",
               fontSize: "16px",
-              background: "#cc0000",
+              background: "rgba(204, 0, 0, 0.6)",
               color: "white",
               border: "none",
               cursor: "pointer",
