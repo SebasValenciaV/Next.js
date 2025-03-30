@@ -7,12 +7,14 @@ import ChatBot from "./components/ChatBot";
 import CurriculumContent from "./components/curriculum";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import MusicSection from "./components/Music";
+import SpaceShooterGame from "./components/SpaceShooterGame";
 
-export default function Home() {
+export default function Page() {
   const [showCurriculum, setShowCurriculum] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [showAI, setShowAI] = useState(false);
   const [showMusic, setShowMusic] = useState(false);
+  const [showGame, setShowGame] = useState(false);
   const [language, setLanguage] = useState("en");
   const [loggedInUser, setLoggedInUser] = useState<{ userId: string; name: string } | null>(null);
 
@@ -66,10 +68,17 @@ export default function Home() {
 
         {/* Botón de Registro/ Register */}
         <button
-          onClick={() => window.location.href = "https://sesion-three.vercel.app/"}
+          onClick={() => (window.location.href = "https://sesion-three.vercel.app/")}
           className="hero-btn redirect-btn"
         >
           {language === "es" ? "Nueva plataforma" : "New platform"}
+        </button>
+
+        {/* Botón para mostrar/ocultar el juego */}
+        <button onClick={() => setShowGame(!showGame)} className="hero-btn game-btn">
+          {showGame
+            ? language === "es" ? "Ocultar Juego" : "Hide Game"
+            : language === "es" ? "Jugar Juego" : "Play Game"}
         </button>
       </section>
 
@@ -84,6 +93,9 @@ export default function Home() {
 
       {/* Sección de Música */}
       {showMusic && <MusicSection />}
+
+      {/* Renderizado condicional del juego */}
+      {showGame && <SpaceShooterGame />}
     </div>
   );
 }
