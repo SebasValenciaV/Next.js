@@ -31,6 +31,7 @@ type Fragment = {
 
 export default function SpaceDodgerGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
   const [score, setScore] = useState(0);
   const [destroyedPlanets, setDestroyedPlanets] = useState<{ [key: number]: number }>({
     0: 0,
@@ -41,7 +42,7 @@ export default function SpaceDodgerGame() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [paused, setPaused] = useState(false);
-  // Indicaciones para PC se conservan
+  // Se mantienen las indicaciones para PC
   const [selectedWeapon, setSelectedWeapon] = useState<"normal" | "spread" | "laser">("normal");
   const [resetGame, setResetGame] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
@@ -57,8 +58,16 @@ export default function SpaceDodgerGame() {
     setPaused(false);
   };
 
+  // Función para terminar la partida (mostrar resultados)
+  const terminateGame = () => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    setGameOver(true);
+  };
+
   useEffect(() => {
-    // Evitar scroll con teclas
+    // Evitar scroll con las flechas
     const preventScroll = (e: KeyboardEvent) => {
       if (
         e.key === "ArrowUp" ||
@@ -79,7 +88,7 @@ export default function SpaceDodgerGame() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Dimensiones internas fijas: 800 x 600
+    // Dimensiones internas fijas
     const baseWidth = 800;
     const baseHeight = 600;
     canvas.width = baseWidth;
@@ -95,7 +104,7 @@ export default function SpaceDodgerGame() {
     let lastTapTime = 0;
     const tapDelay = 300; // ms para considerar taps consecutivos
 
-    // Función de disparo unificada (también se usa desde teclado)
+    // Función de disparo unificada
     const shootShot = (weaponType: "normal" | "spread" | "laser") => {
       if (!canShoot) return;
       if (weaponType === "normal") {
@@ -133,12 +142,10 @@ export default function SpaceDodgerGame() {
       }, 300);
     };
 
-    // Variables para el seguimiento táctil fluido
-    // Se guarda la posición objetivo de la nave y se interpola en cada ciclo
+    // Seguimiento táctil fluido mediante interpolación
     const smoothingFactor = 0.2;
     let targetPosition = { x: baseWidth / 2, y: baseHeight - 120 };
 
-    // Actualiza la posición objetivo al tocar (touchstart y touchmove)
     const updateSpaceshipPosition = (e: TouchEvent) => {
       if (e.touches.length > 1) return;
       const touch = e.touches[0];
@@ -150,7 +157,7 @@ export default function SpaceDodgerGame() {
     canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
     canvas.addEventListener("touchmove", updateSpaceshipPosition, { passive: false });
 
-    // Manejo de taps para disparar (sin afectar el movimiento)
+    // Manejo de taps para disparar sin afectar el movimiento
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault();
       const currentTime = Date.now();
@@ -187,6 +194,7 @@ export default function SpaceDodgerGame() {
       });
     }
 
+    // Datos de la nave
     const spaceship = {
       x: baseWidth / 2,
       y: baseHeight - 120,
@@ -323,8 +331,6 @@ export default function SpaceDodgerGame() {
       ctx.closePath();
     };
 
-    let animationFrameId: number;
-
     const createFragments = (obs: Obstacle) => {
       const numFragments = 5;
       for (let i = 0; i < numFragments; i++) {
@@ -359,33 +365,33 @@ export default function SpaceDodgerGame() {
         ctx.font = "40px Arial";
         ctx.textAlign = "center";
         ctx.fillText("PAUSADO", baseWidth / 2, baseHeight / 2);
-        animationFrameId = requestAnimationFrame(gameLoop);
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
         return;
       }
 
       drawBackground();
       if (!gameStarted) {
-        animationFrameId = requestAnimationFrame(gameLoop);
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
         return;
       }
 
-      // En dispositivos con capacidad táctil se interpola la posición de la nave
+      // En dispositivos táctiles se interpola la posición de la nave
       if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
         spaceship.x += (targetPosition.x - spaceship.x) * smoothingFactor;
         spaceship.y += (targetPosition.y - spaceship.y) * smoothingFactor;
       }
 
-      // Movimiento con teclado (para PC)
-      if (keys["ArrowLeft"] && spaceship.x - spaceship.width / 2 > 0) {
+      // Movimiento con teclado (PC) y evitar que la nave salga del tablero
+      if (keys["ArrowLeft"]) {
         spaceship.x -= spaceship.speed;
       }
-      if (keys["ArrowRight"] && spaceship.x + spaceship.width / 2 < baseWidth) {
+      if (keys["ArrowRight"]) {
         spaceship.x += spaceship.speed;
       }
-      if (keys["ArrowUp"] && spaceship.y - spaceship.height / 2 > 0) {
+      if (keys["ArrowUp"]) {
         spaceship.y -= spaceship.speed;
       }
-      if (keys["ArrowDown"] && spaceship.y + spaceship.height / 2 < baseHeight) {
+      if (keys["ArrowDown"]) {
         spaceship.y += spaceship.speed;
       }
       if (keys["z"]) {
@@ -394,6 +400,9 @@ export default function SpaceDodgerGame() {
         spaceship.y -= keys["ArrowUp"] ? spaceship.speed * 0.8 : 0;
         spaceship.y += keys["ArrowDown"] ? spaceship.speed * 0.8 : 0;
       }
+      // Clampeo para que la nave permanezca en el tablero
+      spaceship.x = Math.max(spaceship.width / 2, Math.min(spaceship.x, baseWidth - spaceship.width / 2));
+      spaceship.y = Math.max(spaceship.height / 2, Math.min(spaceship.y, baseHeight - spaceship.height / 2));
 
       // Disparo con "x" (método teclado)
       if (keys["x"] && canShoot) {
@@ -426,13 +435,13 @@ export default function SpaceDodgerGame() {
         obs.y += obs.speed;
         drawObstacle(obs);
 
-        // Colisión nave-obstáculo (aproximación circular)
+        // Colisión nave-obstáculo
         const dx = spaceship.x - obs.x;
         const dy = spaceship.y - obs.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < obs.radius + spaceship.width * 0.3) {
           setGameOver(true);
-          cancelAnimationFrame(animationFrameId);
+          if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
           return;
         }
 
@@ -461,14 +470,13 @@ export default function SpaceDodgerGame() {
       });
 
       setScore(scoreRef.current);
-
       ctx.fillStyle = "white";
       ctx.font = "20px Arial";
       ctx.textAlign = "left";
       ctx.fillText("Score: " + scoreRef.current, 20, 30);
 
       if (!gameOver) {
-        animationFrameId = requestAnimationFrame(gameLoop);
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
       } else {
         ctx.fillStyle = "rgba(0,0,0,0.85)";
         ctx.fillRect(0, baseHeight / 2 - 50, baseWidth, 100);
@@ -487,7 +495,7 @@ export default function SpaceDodgerGame() {
       canvas.removeEventListener("touchstart", updateSpaceshipPosition);
       canvas.removeEventListener("touchmove", updateSpaceshipPosition);
       canvas.removeEventListener("touchend", handleTouchEnd);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
   }, [gameStarted, selectedWeapon, paused, resetGame]);
 
@@ -540,6 +548,7 @@ export default function SpaceDodgerGame() {
             onClick={restartGame}
             style={{
               padding: "6px 10px",
+              marginRight: "10px",
               background: "rgba(204, 0, 0, 0.6)",
               color: "white",
               border: "none",
@@ -548,6 +557,19 @@ export default function SpaceDodgerGame() {
             }}
           >
             Reiniciar
+          </button>
+          <button
+            onClick={terminateGame}
+            style={{
+              padding: "6px 10px",
+              background: "rgba(100, 100, 100, 0.6)",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Terminar partida
           </button>
         </div>
       )}
