@@ -143,15 +143,19 @@ export default function SpaceDodgerGame() {
     };
 
     // Seguimiento táctil fluido mediante interpolación
-    const smoothingFactor = 0.2;
+    // Ajuste del factor de suavizado para mayor precisión en móvil
+    const smoothingFactor = 0.15;
     let targetPosition = { x: baseWidth / 2, y: baseHeight - 120 };
 
+    // Función para actualizar la posición de la nave, considerando la escala del canvas
     const updateSpaceshipPosition = (e: TouchEvent) => {
       if (e.touches.length > 1) return;
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
-      targetPosition.x = touch.clientX - rect.left;
-      targetPosition.y = touch.clientY - rect.top;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      targetPosition.x = (touch.clientX - rect.left) * scaleX;
+      targetPosition.y = (touch.clientY - rect.top) * scaleY;
     };
 
     canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
