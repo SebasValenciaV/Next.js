@@ -31,9 +31,7 @@ type Fragment = {
 
 export default function SpaceDodgerGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // Estado para puntaje general
   const [score, setScore] = useState(0);
-  // Estado para contar planetas destruidos por tipo (detalle por color)
   const [destroyedPlanets, setDestroyedPlanets] = useState<{ [key: number]: number }>({
     0: 0,
     1: 0,
@@ -43,17 +41,14 @@ export default function SpaceDodgerGame() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [paused, setPaused] = useState(false);
+  // Se sigue usando selectedWeapon para otros controles (teclado)
   const [selectedWeapon, setSelectedWeapon] = useState<"normal" | "spread" | "laser">("normal");
-  // Contador para reiniciar sin recargar la web
   const [resetGame, setResetGame] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
-
-  // Usamos ref para acumular puntaje sin depender de cierres
   const scoreRef = useRef(0);
 
-  // Reinicia solo el juego sin recargar la página
   const restartGame = () => {
-    setResetGame(prev => prev + 1);
+    setResetGame((prev) => prev + 1);
     scoreRef.current = 0;
     setScore(0);
     setDestroyedPlanets({ 0: 0, 1: 0, 2: 0, 3: 0 });
@@ -63,7 +58,7 @@ export default function SpaceDodgerGame() {
   };
 
   useEffect(() => {
-    // Evita que se haga scroll al pulsar las flechas
+    // Evitar scroll con teclas
     const preventScroll = (e: KeyboardEvent) => {
       if (
         e.key === "ArrowUp" ||
@@ -84,20 +79,92 @@ export default function SpaceDodgerGame() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Dimensiones internas reducidas: 800 x 600
+    // Dimensiones internas fijas: 800 x 600
     const baseWidth = 800;
     const baseHeight = 600;
     canvas.width = baseWidth;
     canvas.height = baseHeight;
 
-    // Para dispositivos táctiles, evitar scroll en el canvas
+    // Prevenir scroll en dispositivos táctiles
     canvas.style.touchAction = "none";
     canvas.addEventListener("touchstart", (e) => e.preventDefault(), { passive: false });
     canvas.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
 
-    // Control táctil: mover la nave según la posición del toque
+    // Variables para controlar taps
+    let tapCount = 0;
+    let lastTapTime = 0;
+    const tapDelay = 300; // ms para considerar taps consecutivos
+
+    // Función de disparo unificada (también se puede invocar desde teclado)
+    const shootShot = (weaponType: "normal" | "spread" | "laser") => {
+      if (!canShoot) return;
+      if (weaponType === "normal") {
+        bullets.push({
+          x: spaceship.x,
+          y: spaceship.y - spaceship.height / 2,
+          radius: 5,
+          speed: 9,
+          type: "normal",
+        });
+      } else if (weaponType === "spread") {
+        const angles = [-0.1, 0, 0.1];
+        angles.forEach((ang) => {
+          bullets.push({
+            x: spaceship.x,
+            y: spaceship.y - spaceship.height / 2,
+            radius: 4,
+            speed: 9,
+            angle: ang,
+            type: "spread",
+          });
+        });
+      } else if (weaponType === "laser") {
+        bullets.push({
+          x: spaceship.x,
+          y: spaceship.y - spaceship.height / 2,
+          radius: 2,
+          speed: 20,
+          type: "laser",
+        });
+      }
+      canShoot = false;
+      setTimeout(() => {
+        canShoot = true;
+      }, 300);
+    };
+
+    // Manejo de taps: si no se mueve demasiado el dedo, se considera un tap y se acumula
+    const handleTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
+      const currentTime = Date.now();
+      if (currentTime - lastTapTime < tapDelay) {
+        tapCount++;
+      } else {
+        tapCount = 1;
+      }
+      lastTapTime = currentTime;
+      // Usamos setTimeout para esperar a ver si hay más taps
+      setTimeout(() => {
+        if (Date.now() - lastTapTime >= tapDelay) {
+          if (tapCount === 1) {
+            shootShot("normal");
+          } else if (tapCount === 2) {
+            shootShot("spread");
+          } else if (tapCount >= 3) {
+            shootShot("laser");
+          }
+          tapCount = 0;
+        }
+      }, tapDelay);
+    };
+
+    canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
+
+    // Mover la nave con touchmove (más preciso)
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
+      // Si hay más de un toque, se ignora para no confundir con taps
+      if (e.touches.length > 1) return;
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
       const touchX = touch.clientX - rect.left;
@@ -107,7 +174,7 @@ export default function SpaceDodgerGame() {
     };
     canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
 
-    // Generar estrellas para el fondo
+    // Generar estrellas de fondo
     const numStars = 100;
     const stars: { x: number; y: number; radius: number }[] = [];
     for (let i = 0; i < numStars; i++) {
@@ -118,7 +185,6 @@ export default function SpaceDodgerGame() {
       });
     }
 
-    // Datos de la nave (más pequeña para el canvas reducido)
     const spaceship = {
       x: baseWidth / 2,
       y: baseHeight - 120,
@@ -130,8 +196,8 @@ export default function SpaceDodgerGame() {
     let bullets: Bullet[] = [];
     let obstacles: Obstacle[] = [];
     let keys: { [key: string]: boolean } = {};
+    let canShoot = true;
 
-    // Control de teclado: evita scroll y registra teclas
     const keyDownHandler = (e: KeyboardEvent) => {
       if (
         e.key === "ArrowUp" ||
@@ -146,15 +212,13 @@ export default function SpaceDodgerGame() {
     const keyUpHandler = (e: KeyboardEvent) => {
       keys[e.key] = false;
     };
-
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
 
-    // Creación de obstáculo (planeta) con velocidad variable y diseño (0 a 3)
     let obstacleTimer = 0;
     const obstacleInterval = 150;
     const createObstacle = () => {
-      const radius = 20 + Math.random() * 50; // entre 20 y 70
+      const radius = 20 + Math.random() * 50;
       const x = Math.random() * (baseWidth - 2 * radius) + radius;
       const y = -radius;
       const speedLevels = [0.6, 1.2, 1.8, 2.4];
@@ -204,7 +268,6 @@ export default function SpaceDodgerGame() {
       });
     };
 
-    // Dibujo de la nave
     const drawSpaceship = () => {
       ctx.save();
       ctx.translate(spaceship.x, spaceship.y);
@@ -226,7 +289,6 @@ export default function SpaceDodgerGame() {
       ctx.restore();
     };
 
-    // Dibujo de la bala (si es laser, se dibuja como línea larga)
     const drawBullet = (bullet: Bullet) => {
       ctx.beginPath();
       if (bullet.type === "laser") {
@@ -260,7 +322,6 @@ export default function SpaceDodgerGame() {
     };
 
     let animationFrameId: number;
-    let canShoot = true;
 
     const createFragments = (obs: Obstacle) => {
       const numFragments = 5;
@@ -306,7 +367,7 @@ export default function SpaceDodgerGame() {
         return;
       }
 
-      // Movimiento de la nave con teclas
+      // Movimiento con teclado (para escritorio)
       if (keys["ArrowLeft"] && spaceship.x - spaceship.width / 2 > 0) {
         spaceship.x -= spaceship.speed;
       }
@@ -326,39 +387,10 @@ export default function SpaceDodgerGame() {
         spaceship.y += keys["ArrowDown"] ? spaceship.speed * 0.8 : 0;
       }
 
-      // Disparo con "x" según el arma seleccionada
+      // Disparo con "x" (método por teclado) usa la arma seleccionada
       if (keys["x"] && canShoot) {
-        if (selectedWeapon === "normal") {
-          bullets.push({
-            x: spaceship.x,
-            y: spaceship.y - spaceship.height / 2,
-            radius: 5,
-            speed: 9,
-            type: "normal",
-          });
-        } else if (selectedWeapon === "spread") {
-          const angles = [-0.1, 0, 0.1];
-          angles.forEach((ang) => {
-            bullets.push({
-              x: spaceship.x,
-              y: spaceship.y - spaceship.height / 2,
-              radius: 4,
-              speed: 9,
-              angle: ang,
-              type: "spread",
-            });
-          });
-        } else if (selectedWeapon === "laser") {
-          bullets.push({
-            x: spaceship.x,
-            y: spaceship.y - spaceship.height / 2,
-            radius: 2,
-            speed: 20,
-            type: "laser",
-          });
-        }
-        canShoot = false;
-        setTimeout(() => { canShoot = true; }, 300);
+        // Se respeta selectedWeapon para disparos desde teclado
+        shootShot(selectedWeapon);
       }
 
       drawSpaceship();
@@ -382,13 +414,12 @@ export default function SpaceDodgerGame() {
         obstacleTimer = 0;
       }
 
-      // Actualizar y dibujar obstáculos
       obstacles = obstacles.filter(obs => obs.y - obs.radius < baseHeight);
       obstacles.forEach((obs, index) => {
         obs.y += obs.speed;
         drawObstacle(obs);
 
-        // Colisión con la nave (aproximación circular)
+        // Colisión nave-obstáculo (apróx. circular)
         const dx = spaceship.x - obs.x;
         const dy = spaceship.y - obs.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -398,7 +429,7 @@ export default function SpaceDodgerGame() {
           return;
         }
 
-        // Colisión bala-obstáculo: se asigna puntaje y se actualiza el contador según el diseño
+        // Colisión bala-obstáculo
         bullets.forEach((bullet, bIndex) => {
           const dxBullet = bullet.x - obs.x;
           const dyBullet = bullet.y - obs.y;
@@ -422,10 +453,8 @@ export default function SpaceDodgerGame() {
         drawFragment(frag);
       });
 
-      // Actualizar estado del puntaje general
       setScore(scoreRef.current);
 
-      // Mostrar puntaje general en el canvas
       ctx.fillStyle = "white";
       ctx.font = "20px Arial";
       ctx.textAlign = "left";
@@ -449,11 +478,11 @@ export default function SpaceDodgerGame() {
       document.removeEventListener("keydown", keyDownHandler, false);
       document.removeEventListener("keyup", keyUpHandler, false);
       canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, [gameStarted, selectedWeapon, paused, resetGame]);
 
-  // Mapear diseños a nombres y colores para estadísticas
   const designNames: { [key: number]: { name: string; color: string } } = {
     0: { name: "Azul", color: "#a0c8ff" },
     1: { name: "Amarillo", color: "#ffddaa" },
@@ -533,9 +562,11 @@ export default function SpaceDodgerGame() {
         >
           <h2 style={{ fontSize: "28px", marginBottom: "20px" }}>SPACE DODGER</h2>
           <p style={{ marginBottom: "10px" }}>Usa las flechas para mover la nave.</p>
-          <p style={{ marginBottom: "10px" }}>Presiona "z" para impulso extra y "x" para disparar.</p>
+          <p style={{ marginBottom: "10px" }}>
+            En móvil: arrastra para mover y toca 1, 2 o 3 veces para disparar.
+          </p>
           <div style={{ margin: "20px" }}>
-            <span style={{ marginRight: "10px" }}>Elige tu armamento:</span>
+            <span style={{ marginRight: "10px" }}>Elige tu armamento (para teclado):</span>
             <button
               onClick={() => setSelectedWeapon("normal")}
               style={{
