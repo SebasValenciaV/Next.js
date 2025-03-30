@@ -810,10 +810,10 @@ export default function SpaceDodgerGame() {
   }, [gameStarted, selectedWeapon, paused, resetGame, shipDesign]);
 
   const designNames: { [key: number]: { name: string; color: string } } = {
-    0: { name: "Azul", color: "#a0c8ff" },
-    1: { name: "Amarillo", color: "#ffddaa" },
-    2: { name: "Verde", color: "#ccffcc" },
-    3: { name: "Rosa", color: "#ffd1dc" },
+    0: { name: "Neptuno", color: "#a0c8ff" },
+    1: { name: "Jupiter", color: "#ffddaa" },
+    2: { name: "Tierra", color: "#ccffcc" },
+    3: { name: "Saturno", color: "#ffd1dc" },
   };
 
   return (
