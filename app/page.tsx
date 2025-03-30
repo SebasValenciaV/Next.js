@@ -51,7 +51,7 @@ export default function Page() {
         <button onClick={() => setShowProjects(!showProjects)} className="hero-btn secondary">
           {showProjects
             ? language === "es" ? "Ocultar Proyectos" : "Hide Projects"
-            : language === "es" ? "Ver Mockups" : "View mockups"}
+            : language === "es" ? "Ver Mockups" : "See mockups"}
         </button>
 
         <button onClick={() => setShowAI(!showAI)} className="hero-btn ai-btn">
@@ -78,7 +78,7 @@ export default function Page() {
         <button onClick={() => setShowGame(!showGame)} className="hero-btn game-btn">
           {showGame
             ? language === "es" ? "Ocultar Juego" : "Hide Game"
-            : language === "es" ? "Jugar Juego" : "Play Game"}
+            : language === "es" ? "Jugar " : "Play Game"}
         </button>
       </section>
 
