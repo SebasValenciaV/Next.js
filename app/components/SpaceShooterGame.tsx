@@ -29,6 +29,15 @@ type Fragment = {
   life: number;
 };
 
+type Enemy = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  speed: number;
+  shootTimer: number;
+};
+
 export default function SpaceDodgerGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -39,10 +48,11 @@ export default function SpaceDodgerGame() {
     2: 0,
     3: 0,
   });
+  const [destroyedEnemies, setDestroyedEnemies] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [paused, setPaused] = useState(false);
-  // Se mantienen las indicaciones para PC
+  // Arma seleccionada para PC
   const [selectedWeapon, setSelectedWeapon] = useState<"normal" | "spread" | "laser">("normal");
   const [resetGame, setResetGame] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
@@ -53,6 +63,7 @@ export default function SpaceDodgerGame() {
     scoreRef.current = 0;
     setScore(0);
     setDestroyedPlanets({ 0: 0, 1: 0, 2: 0, 3: 0 });
+    setDestroyedEnemies(0);
     setGameOver(false);
     setGameStarted(false);
     setPaused(false);
@@ -143,11 +154,10 @@ export default function SpaceDodgerGame() {
     };
 
     // Seguimiento táctil fluido mediante interpolación
-    // Ajuste del factor de suavizado para mayor precisión en móvil
     const smoothingFactor = 0.15;
     let targetPosition = { x: baseWidth / 2, y: baseHeight - 120 };
 
-    // Función para actualizar la posición de la nave, considerando la escala del canvas
+    // Actualizar posición de la nave en dispositivos táctiles
     const updateSpaceshipPosition = (e: TouchEvent) => {
       if (e.touches.length > 1) return;
       const touch = e.touches[0];
@@ -161,7 +171,7 @@ export default function SpaceDodgerGame() {
     canvas.addEventListener("touchstart", updateSpaceshipPosition, { passive: false });
     canvas.addEventListener("touchmove", updateSpaceshipPosition, { passive: false });
 
-    // Manejo de taps para disparar sin afectar el movimiento
+    // Manejo de taps para disparar
     const handleTouchEnd = (e: TouchEvent) => {
       e.preventDefault();
       const currentTime = Date.now();
@@ -198,7 +208,7 @@ export default function SpaceDodgerGame() {
       });
     }
 
-    // Datos de la nave
+    // Datos de la nave del jugador
     const spaceship = {
       x: baseWidth / 2,
       y: baseHeight - 120,
@@ -209,6 +219,8 @@ export default function SpaceDodgerGame() {
 
     let bullets: Bullet[] = [];
     let obstacles: Obstacle[] = [];
+    let enemies: Enemy[] = [];
+    let enemyBullets: Bullet[] = [];
     let keys: { [key: string]: boolean } = {};
     let canShoot = true;
 
@@ -235,8 +247,15 @@ export default function SpaceDodgerGame() {
       const radius = 20 + Math.random() * 50;
       const x = Math.random() * (baseWidth - 2 * radius) + radius;
       const y = -radius;
-      const speedLevels = [0.6, 1.2, 1.8, 2.4];
-      const speed = speedLevels[Math.floor(Math.random() * speedLevels.length)];
+      // Dificultad progresiva: multiplicador de velocidad según score
+      const baseSpeedLevels = [0.6, 1.2, 1.8, 2.4];
+      let speedMultiplier = 1;
+      if (scoreRef.current >= 6000) {
+        speedMultiplier = 2;
+      } else if (scoreRef.current >= 3000) {
+        speedMultiplier = 1.5;
+      }
+      const speed = baseSpeedLevels[Math.floor(Math.random() * baseSpeedLevels.length)] * speedMultiplier;
       const design = Math.floor(Math.random() * 4);
       let grad: CanvasGradient;
       if (design === 0) {
@@ -263,6 +282,32 @@ export default function SpaceDodgerGame() {
       obstacles.push({ x, y, radius, speed, gradient: grad, design });
     };
 
+    // Función para generar enemigos según la dificultad
+    let enemyTimer = 0;
+    let enemyInterval = 600; // intervalo base
+    const createEnemy = () => {
+      const width = 40;
+      const height = 40;
+      const x = Math.random() * (baseWidth - width) + width / 2;
+      const y = -height;
+      let enemySpeed = 1.5;
+      // Ajuste de velocidad según la dificultad
+      if (scoreRef.current >= 6000) {
+        enemySpeed = 3;
+      } else if (scoreRef.current >= 3000) {
+        enemySpeed = 2;
+      }
+      enemies.push({
+        x,
+        y,
+        width,
+        height,
+        speed: enemySpeed,
+        shootTimer: 0,
+      });
+    };
+
+    // Dibujar fondo con estrellas
     const drawBackground = () => {
       const bgGrad = ctx.createLinearGradient(0, 0, 0, baseHeight);
       bgGrad.addColorStop(0, "#000030");
@@ -335,6 +380,19 @@ export default function SpaceDodgerGame() {
       ctx.closePath();
     };
 
+    const drawEnemy = (enemy: Enemy) => {
+      ctx.save();
+      ctx.translate(enemy.x, enemy.y);
+      ctx.beginPath();
+      ctx.moveTo(0, -enemy.height / 2);
+      ctx.lineTo(-enemy.width / 2, enemy.height / 2);
+      ctx.lineTo(enemy.width / 2, enemy.height / 2);
+      ctx.closePath();
+      ctx.fillStyle = "#ffcc00";
+      ctx.fill();
+      ctx.restore();
+    };
+
     const createFragments = (obs: Obstacle) => {
       const numFragments = 5;
       for (let i = 0; i < numFragments; i++) {
@@ -361,6 +419,14 @@ export default function SpaceDodgerGame() {
       }
     };
 
+    // Detección de colisiones (círculo a círculo)
+    const circleCollision = (x1: number, y1: number, r1: number, x2: number, y2: number, r2: number) => {
+      const dx = x1 - x2;
+      const dy = y1 - y2;
+      return Math.sqrt(dx * dx + dy * dy) < r1 + r2;
+    };
+
+    // Game Loop principal
     const gameLoop = () => {
       if (paused) {
         ctx.fillStyle = "rgba(0,0,0,0.5)";
@@ -379,13 +445,21 @@ export default function SpaceDodgerGame() {
         return;
       }
 
+      // Actualizar dificultad según el puntaje
+      let dificultad: "facil" | "medio" | "avanzado" = "facil";
+      if (scoreRef.current >= 6000) {
+        dificultad = "avanzado";
+      } else if (scoreRef.current >= 3000) {
+        dificultad = "medio";
+      }
+
       // En dispositivos táctiles se interpola la posición de la nave
       if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
         spaceship.x += (targetPosition.x - spaceship.x) * smoothingFactor;
         spaceship.y += (targetPosition.y - spaceship.y) * smoothingFactor;
       }
 
-      // Movimiento con teclado (PC) y evitar que la nave salga del tablero
+      // Movimiento con teclado (PC)
       if (keys["ArrowLeft"]) {
         spaceship.x -= spaceship.speed;
       }
@@ -408,14 +482,14 @@ export default function SpaceDodgerGame() {
       spaceship.x = Math.max(spaceship.width / 2, Math.min(spaceship.x, baseWidth - spaceship.width / 2));
       spaceship.y = Math.max(spaceship.height / 2, Math.min(spaceship.y, baseHeight - spaceship.height / 2));
 
-      // Disparo con "x" (método teclado)
+      // Disparo con "x" (teclado)
       if (keys["x"] && canShoot) {
         shootShot(selectedWeapon);
       }
 
       drawSpaceship();
 
-      // Actualizar y dibujar balas
+      // Actualizar y dibujar balas del jugador
       bullets = bullets.filter(b => b.y + (b.radius || 0) > 0);
       bullets.forEach((b) => {
         if (b.angle !== undefined) {
@@ -427,23 +501,19 @@ export default function SpaceDodgerGame() {
         drawBullet(b);
       });
 
-      // Generar obstáculos
+      // Actualizar obstáculos
       obstacleTimer++;
       if (obstacleTimer > obstacleInterval) {
         createObstacle();
         obstacleTimer = 0;
       }
-
       obstacles = obstacles.filter(obs => obs.y - obs.radius < baseHeight);
       obstacles.forEach((obs, index) => {
         obs.y += obs.speed;
         drawObstacle(obs);
 
         // Colisión nave-obstáculo
-        const dx = spaceship.x - obs.x;
-        const dy = spaceship.y - obs.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < obs.radius + spaceship.width * 0.3) {
+        if (circleCollision(spaceship.x, spaceship.y, spaceship.width * 0.3, obs.x, obs.y, obs.radius)) {
           setGameOver(true);
           if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
           return;
@@ -451,10 +521,7 @@ export default function SpaceDodgerGame() {
 
         // Colisión bala-obstáculo
         bullets.forEach((bullet, bIndex) => {
-          const dxBullet = bullet.x - obs.x;
-          const dyBullet = bullet.y - obs.y;
-          const distBullet = Math.sqrt(dxBullet * dxBullet + dyBullet * dyBullet);
-          if (distBullet < obs.radius + bullet.radius) {
+          if (circleCollision(bullet.x, bullet.y, bullet.radius, obs.x, obs.y, obs.radius)) {
             createFragments(obs);
             obstacles.splice(index, 1);
             bullets.splice(bIndex, 1);
@@ -468,6 +535,78 @@ export default function SpaceDodgerGame() {
         });
       });
 
+      // Actualizar y dibujar enemigos
+      enemyTimer++;
+      // Ajustar intervalo de aparición según la dificultad
+      let enemySpawnInterval = dificultad === "facil" ? 800 : dificultad === "medio" ? 600 : 400;
+      if (enemyTimer > enemySpawnInterval) {
+        createEnemy();
+        enemyTimer = 0;
+      }
+      enemies = enemies.filter(enemy => enemy.y - enemy.height < baseHeight);
+      enemies.forEach((enemy, eIndex) => {
+        enemy.y += enemy.speed;
+        // Incrementar timer para disparo
+        enemy.shootTimer++;
+        // Los enemigos disparan en intervalos (más rápido en niveles más altos)
+        let enemyShootInterval = dificultad === "facil" ? 120 : dificultad === "medio" ? 90 : 60;
+        if (enemy.shootTimer > enemyShootInterval) {
+          // Disparo dirigido hacia la nave del jugador
+          const angle = Math.atan2(spaceship.y - enemy.y, spaceship.x - enemy.x);
+          enemyBullets.push({
+            x: enemy.x,
+            y: enemy.y + enemy.height / 2,
+            radius: 4,
+            speed: dificultad === "avanzado" ? 5 : 4,
+            angle,
+          });
+          enemy.shootTimer = 0;
+        }
+        drawEnemy(enemy);
+
+        // Colisión nave-enemigo
+        if (
+          spaceship.x > enemy.x - enemy.width / 2 &&
+          spaceship.x < enemy.x + enemy.width / 2 &&
+          spaceship.y > enemy.y - enemy.height / 2 &&
+          spaceship.y < enemy.y + enemy.height / 2
+        ) {
+          setGameOver(true);
+          if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+          return;
+        }
+
+        // Colisión bala jugador - enemigo
+        bullets.forEach((bullet, bIndex) => {
+          if (circleCollision(bullet.x, bullet.y, bullet.radius, enemy.x, enemy.y, enemy.width / 2)) {
+            enemies.splice(eIndex, 1);
+            bullets.splice(bIndex, 1);
+            scoreRef.current += 200; // puntos por destruir un enemigo
+            setDestroyedEnemies(prev => prev + 1);
+          }
+        });
+      });
+
+      // Actualizar y dibujar balas enemigas
+      enemyBullets = enemyBullets.filter(b => b.y - (b.radius || 0) < baseHeight);
+      enemyBullets.forEach((b, index) => {
+        // Disparo con ángulo (si existe) o vertical
+        if (b.angle !== undefined) {
+          b.x += b.speed * Math.cos(b.angle);
+          b.y += b.speed * Math.sin(b.angle);
+        } else {
+          b.y += b.speed;
+        }
+        drawBullet(b);
+
+        // Colisión bala enemiga con nave
+        if (circleCollision(b.x, b.y, b.radius, spaceship.x, spaceship.y, spaceship.width * 0.3)) {
+          setGameOver(true);
+          if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+          return;
+        }
+      });
+
       updateFragments();
       fragments.forEach(frag => {
         drawFragment(frag);
@@ -478,6 +617,12 @@ export default function SpaceDodgerGame() {
       ctx.font = "20px Arial";
       ctx.textAlign = "left";
       ctx.fillText("Score: " + scoreRef.current, 20, 30);
+
+      // Mostrar nivel de dificultad
+      ctx.fillStyle = "white";
+      ctx.font = "16px Arial";
+      ctx.textAlign = "right";
+      ctx.fillText("Dificultad: " + dificultad.toUpperCase(), baseWidth - 20, 30);
 
       if (!gameOver) {
         animationFrameRef.current = requestAnimationFrame(gameLoop);
@@ -694,6 +839,7 @@ export default function SpaceDodgerGame() {
                 </p>
               );
             })}
+            <p style={{ marginTop: "10px" }}>Enemigos Destruidos: {destroyedEnemies}</p>
           </div>
           <button
             onClick={restartGame}
