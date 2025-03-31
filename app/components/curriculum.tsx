@@ -1,7 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { FaLinkedin, FaGithub, FaBloggerB,  FaDownload  } from "react-icons/fa";
+import { 
+  FaLinkedin, FaGithub, FaBloggerB, FaDownload, 
+  FaJs, FaPython, FaPhp, FaHtml5, FaCss3Alt, FaReact, FaNode, 
+} from "react-icons/fa";
+import { 
+  SiTypescript, SiCplusplus, SiNextdotjs, SiVite, SiDjango, 
+  SiMysql, SiPostgresql, SiMongodb, SiDotnet, SiAngular 
+} from "react-icons/si";
 
 type CurriculumContentProps = {
   language: string;
@@ -64,10 +71,7 @@ export default function CurriculumContent({ language }: CurriculumContentProps) 
           </div>
         </div>
         {/* Botón de Descargar PDF */}
-       
-        
-        
-
+ 
         {/* INTRODUCTION */}
         <div className="curriculum-section">
           <h2 className="section-title">
@@ -173,16 +177,42 @@ Additionally, I have practical experience developing AI prompts that guide model
         </div>
         
         {/* SKILLS */}
+        
         <div className="curriculum-section">
           <h2 className="section-title">
             {language === "es" ? "Habilidades" : "Skills"}
           </h2>
           <p className="section-text">
-            {language === "es"
-              ? "JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js, Vite, HTML, CSS/Bootstrap, Django, SQL, metodologías ágiles, estructuras de datos, algoritmos, codificación segura y administración de sistemas."
-              : "JavaScript, TypeScript, Python, PHP, C++, C#, Next.js, React.js, Node.js, Vite, HTML, CSS/Bootstrap, Django, SQL, Agile methodologies, data structures, algorithms, secure coding, and systems administration."}
-          </p>
+          {language === "es"
+    ? "JavaScript TypeScript Python PHP C++ Next.js React.js Node.js Vite HTML CSS/Bootstrap Django MySQL PostgreSQL MongoDB .NET Angular"
+    : "JavaScript TypeScript Python PHP C++ Next.js React.js Node.js Vite HTML CSS/Bootstrap Django MySQL PostgreSQL MongoDB .NET Angular"}
+</p>
+                 {/* Iconos de tecnologías */}
+  <div className="tech-icons">
+  <FaJs title="JavaScript" />
+      <SiTypescript title="TypeScript" />
+      <FaPython title="Python" />
+      <FaPhp title="PHP" />
+      <SiCplusplus title="C++" />
+      <SiNextdotjs title="Next.js" />
+      <FaReact title="React.js" />
+      <FaNode title="Node.js" />
+      <SiVite title="Vite" />
+      <FaHtml5 title="HTML" />
+      <FaCss3Alt title="CSS/Bootstrap" />
+      <SiDjango title="Django" />
+      <SiMysql title="MySQL" />
+      <SiPostgresql title="PostgreSQL" />
+      <SiMongodb title="MongoDB" />
+      <SiDotnet title=".NET" />
+      <SiAngular title="Angular" />
+  </div>
+
+        
+        
+
         </div>
+
 
         {/* EDUCATION & COURSES */}
         <div className="curriculum-section">

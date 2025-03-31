@@ -367,3 +367,25 @@ body, html {
   border-radius: 4px;
   white-space: pre-wrap;
 }
+.tech-icons-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tech-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Espacio entre los iconos */
+}
+
+.tech-icons svg {
+  font-size: 40px; /* Tamaño de los iconos */
+  color: #ffffff; /* Color blanco (ajusta según tu diseño) */
+  transition: transform 0.3s ease-in-out;
+}
+
+.tech-icons svg:hover {
+  transform: scale(1.2); /* Efecto de aumento al pasar el cursor */
+}
