@@ -75,18 +75,18 @@ export default function CurriculumContent({ language }: CurriculumContentProps) 
           </h2>
           <p className="section-text">
             {language === "es"
-              ? `Experto en codificación con dominio de diversos lenguajes como Python, PHP, C++, C# y JavaScript, y en frameworks como Next.js, React.js, Node.js y Vite. 
+              ? `Experto en codificación con dominio de diversos lenguajes como Python, PHP, C++, C# y JavaScript, y en frameworks/ Librerias como Next.js, React.js, Node.js Angular .Net y Vite. 
 Con una sólida base en estructuras de datos, algoritmos y arquitecturas de software, combinada con metodologías ágiles, resuelvo desafíos complejos de manera eficiente. 
 Competente en el diseño tanto de back-end como de front-end, optimizo soluciones de software mediante prácticas de codificación seguras. 
 Cuento con experiencia en administración de sistemas, gestión tecnológica y desarrollo de sitios web. 
 Mis excepcionales habilidades de liderazgo me permiten organizar tareas y coordinar equipos o departamentos para completar con éxito proyectos en diversos mercados y entornos reales. 
-Además, tengo experiencia práctica en el desarrollo de prompts de IA que guían a los modelos para ofrecer una mayor precisión, seguimiento de instrucciones, creatividad, calidad en la escritura y razonamiento.`
-              : `Expert in coding with proficiency in various languages such as Python, PHP, C++, C#, and JavaScript, and in frameworks such as Next.js, React.js, Node.js, and Vite. 
+Además, tengo experiencia práctica en el desarrollo de prompts de IA que guían a los modelos para ofrecer una mayor precisión, seguimiento de instrucciones, creatividad, calidad en la escritura y razonamiento, se diseñar e implementar APIs o intercambio de archivos para musica, juegos 2D ó 3D y ChatBots.`
+              : `Expert in coding with proficiency in various languages such as Python, PHP, C++, C#, and JavaScript, and in frameworks such as Next.js React.js Node.js Angular .Net and Vite. 
 A solid foundation in data structures, algorithms, and software architectures, combined with agile methodologies, enables me to efficiently solve complex challenges. 
 Proficient in both back-end and front-end design, I optimize software solutions through secure coding practices. 
 I have experience in systems administration, technology management, and website development. 
 My exceptional leadership skills allow me to effectively organize tasks and coordinate teams or departments to successfully complete projects across diverse market and real-life environments. 
-Additionally, I have practical experience developing AI prompts that guide models to deliver improved accuracy, instruction following, creativity, writing quality, and reasoning.`}
+Additionally, I have practical experience developing AI prompts that guide models to deliver improved accuracy, instruction following, creativity, writing quality, and reasoning, I can design and implement APIs or file exchange for music, games 2D or 3D and ChatBots.`}
           </p>
         </div>
 
