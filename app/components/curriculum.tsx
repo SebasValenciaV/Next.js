@@ -54,18 +54,18 @@ export default function CurriculumContent({ language }: CurriculumContentProps) 
               >
                 <FaBloggerB size={24} />
               </a>
-              
+              <div className="download-container" style={{ textAlign: "center" }}>
+          <a href="/curriculum.pdf" download className="download-button" style={{ color: "#FFFFFF" }}>
+            <FaDownload size={20} className="download-icon" />
+            <span>{language === "es" ? "Descargar Curriculum PDF" : "Download Resume PDF"}</span>
+          </a>
+        </div>
             </div>
           </div>
         </div>
         {/* Botón de Descargar PDF */}
        
-        <div className="download-container" style={{ textAlign: "center" }}>
-          <a href="/curriculum.pdf" download className="download-button" style={{ color: "#228B22" }}>
-            <FaDownload size={20} className="download-icon" />
-            <span>{language === "es" ? "Descargar Curriculum PDF" : "Download Resume"}</span>
-          </a>
-        </div>
+        
         
 
         {/* INTRODUCTION */}
@@ -96,35 +96,25 @@ Additionally, I have practical experience developing AI prompts that guide model
             {language === "es" ? "Experiencia Profesional" : "Professional Experience"}
           </h2>
           <ul className="section-list">
+            
             <li>
-              <strong>Avianca Holdings</strong> –{" "}
-              {language === "es"
-                ? "Técnico de Mantenimiento de Aeronaves"
-                : "Aircraft Maintenance Technician"}{" "}
-              <em>(Sep 2018 – Mar 2020)</em>
-              <br />
-              {language === "es"
-                ? "Responsable de inspecciones, reparaciones e instalaciones de componentes en aeronaves comerciales y privadas, colaborando con el equipo para obtener resultados de alta calidad."
-                : "Responsible for inspections, repairs, and component installations on commercial and private aircraft, collaborating with the team to deliver high-quality results."}
-            </li>
-            <li>
-              <strong>Granity Entertainment DAC</strong> –{" "}
+              <strong>Granity Estudios</strong> –{" "}
               {language === "es"
                 ? "Webmaster y Soporte Técnico"
                 : "Webmaster & Technical Support"}{" "}
               <em>(Jun 2023 – Nov 2024)</em>
               <br />
               {language === "es"
-                ? "Especializado en soporte técnico, resolución de problemas y en garantizar la seguridad y eficiencia en múltiples idiomas (Francés, Inglés, Portugués, Alemán, Ruso, Italiano, Neerlandés)."
+                ? "Soporte al cliente, resolucion de problemas, analisis de datos, administracion de plataforma web, informes de casos de investigacion profunda garantizando los derechos de todos los ususarios."
                 : "Specialized in technical support, problem resolution, and ensuring security and efficiency in multiple languages (French, English, Portuguese, German, Russian, Italian, Dutch)."}
             </li>
             <li>
               <strong>Ducaplast Sas</strong> –{" "}
-              {language === "es" ? "FullStack Developer" : "FullStack Developer"}{" "}
+              {language === "es" ? " Desarrollador Fullstack Freelance " : "FullStack Developer Freelance"}{" "}
               <em>(Jun 2024 – Nov 2024)</em>
               <br />
               {language === "es"
-                ? <>Desarrolló una plataforma de e-commerce (
+                ? <>Desarrollar una plataforma de e-commerce (
                   <a
                     href="https://ducaplast.com.co/"
                     target="_blank"
@@ -145,45 +135,43 @@ Additionally, I have practical experience developing AI prompts that guide model
                   </a>
                   ) using Python and Django (SQLite for development, PostgreSQL in production) and HTML, JavaScript, CSS, and Bootstrap for a responsive front-end.</>}
             </li>
-          </ul>
-        </div>
-
-        {/* PROJECTS & FREELANCE */}
-        <div className="curriculum-section">
-          <h2 className="section-title">
-            {language === "es" ? "Proyectos y Freelance" : "Projects & Freelance"}
-          </h2>
-          <ul className="section-list">
             <li>
+              <strong>Bancolombia</strong> –{" "}
+              {language === "es" ? " Asesor jurídico independiente " : "Independent legal advisor"}{" "}
+              <em>(Dic 2024  –  Mar 2025)</em>
+              <br />
               {language === "es"
-                ? "Juegos de Programación Orientada a Objetos (55 Hrs, 2023)"
-                : "Object-Oriented Programming games (55 Hrs, 2023)"}
+                ? <>Analizar documentación legal de inmuebles para verificar su
+                validez, identificar irregularidades y garantizar la correcta
+                transferencia de propiedad. elaborando informes jurídicos que
+                respaldan transacciones seguras. </>
+                : <> Analyze legal property documentation to verify its validity, identify irregularities, and ensure the proper transfer of ownership, while preparing legal reports that support secure transactions.</>}
+            </li>
+            <li>
+              <strong>Avianca Holdings</strong> –{" "}
+              {language === "es"
+                ? "Técnico de Mantenimiento de Aeronaves"
+                : "Aircraft Maintenance Technician"}{" "}
+              <em>(Sep 2018 – Mar 2020)</em>
+              <br />
+              {language === "es"
+                ? "Responsable de inspecciones, reparaciones e instalaciones de componentes en aeronaves comerciales y privadas, colaborando con el equipo para obtener resultados de alta calidad."
+                : "Responsible for inspections, repairs, and component installations on commercial and private aircraft, collaborating with the team to deliver high-quality results."}
             </li>
           </ul>
+        </div>
+        {/* Habilidades complementaria */}
+        <div className="curriculum-section">
+          <h2 className="section-title">
+            {language === "es" ? "Habilidades Complementarias" : "Skills"}
+          </h2>
           <p className="section-text">
-            <strong>GitHub:</strong>{" "}
-            <a
-              href="https://github.com/SebasValenciaV"
-              target="_blank"
-              rel="noreferrer"
-              className="link"
-            >
-              SebasValenciaV
-            </a>
-          </p>
-          <p className="section-text">
-            <strong>{language === "es" ? "Blog:" : "Blog:"} </strong>
-            <a
-              href="https://developersebastianvalencia.blogspot.com"
-              target="_blank"
-              rel="noreferrer"
-              className="link"
-            >
-              developersebastianvalencia.blogspot.com
-            </a>
+            {language === "es"
+              ? "Experto en TI con experiencia en el diseño y evolución de servicios y arquitecturas innovadoras. Domino el levantamiento de requisitos, la gestión de cambios y el análisis de demanda, complementado por conocimientos en marketing, normativas legales y certificación digital para asegurar la continuidad y seguridad."
+              : "IT expert with proven experience in designing and evolving innovative services and architectures. Skilled in requirements gathering, change management, and demand analysis, complemented by expertise in marketing, legal regulations, and digital certification to ensure the continuity and security of critical systems."}
           </p>
         </div>
-
+        
         {/* SKILLS */}
         <div className="curriculum-section">
           <h2 className="section-title">
@@ -206,13 +194,22 @@ Additionally, I have practical experience developing AI prompts that guide model
               <strong>Institución Universitaria Pascual Bravo</strong> –{" "}
               {language === "es" ? "Desarrollador de Software (2020 – 2024)" : "Software Developer (2020 – 2024)"}
             </li>
-            <li>
-              <strong>Colegio La Salle Medellín</strong> –{" "}
-              {language === "es" ? "Diploma de Educación Media (2008 – 2015)" : "High School Diploma (2008 – 2015)"}
-            </li>
+    
             <li>
               <strong>Academia Antioqueña de Aviación</strong> –{" "}
               {language === "es" ? "Técnico en Mantenimiento de Aeronaves (2016 – 2020)" : "Aircraft Maintenance Technician (2016 – 2020)"}
+            </li>
+            <li>
+              <strong>Colegio La Salle de CampoAmor - Medellín</strong> –{" "}
+              {language === "es" ? "Diploma de Educación Media (2008 – 2015)" : "High School Diploma (2008 – 2015)"}
+            </li>
+            <li>
+              <strong>I.E Pascual Bravo</strong> –{" "}
+              {language === "es" ? "(POO) Programacion Orientada a Objetos (38 Hrs, 2024)" : "(OOP) Object-Oriented Programming (50 Hrs, 2024)"}
+            </li>
+            <li>
+              <strong>I.E Pascual Bravo</strong> –{" "}
+              {language === "es" ? "(POE) Programacion Orientada a Eventos (38 Hrs, 2024)" : "(EDP) Event-Driven  Programming (50 Hrs, 2024)"}
             </li>
             <li>
               <strong>I.E Pascual Bravo</strong> –{" "}
@@ -220,7 +217,7 @@ Additionally, I have practical experience developing AI prompts that guide model
             </li>
             <li>
               <strong>Udemy</strong> –{" "}
-              {language === "es" ? "Desarrollo Web Frontend y Backend (38 Hrs, 2024)" : "Front and Backend Web Development (38 Hrs, 2024)"}
+              {language === "es" ? "Desarrollo Web/App Frontend y Backend (100 Hrs, 2024)" : "Front and Backend Web/App Development (38 Hrs, 2024)"}
             </li>
             <li>
               <strong>Eafit University</strong> –{" "}
