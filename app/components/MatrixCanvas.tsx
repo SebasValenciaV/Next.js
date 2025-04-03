@@ -11,7 +11,7 @@ export default function MatrixCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const matrixChars = "天地玄黄宇宙洪荒0123456789";
+    const matrixChars = "$$$$$$$$@@@&&%&%%?¡??¡¿¿天地玄黄宇宙洪荒0123456789セバスチャンバレンシアバルガス°°°|||SEBASTIANVALENCIAVARGAS";
     const charsArray = matrixChars.split("");
     const fontSize = 16;
     const columns = Math.floor(canvas.width / fontSize);
