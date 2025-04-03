@@ -69,12 +69,7 @@ export default function Page() {
             {language === "es" ? "Nueva plataforma" : "New platform"}
           </button>
 
-          <button
-            onClick={() => (window.location.href = "https://rosebud.ai/p/b78ca2c8-21d8-4733-8056-5041aa232780")}
-            className="hero-btn redirect-btn"
-          >
-            {language === "es" ? "Jugar en 3D" : "Play 3D game"}
-          </button>
+      
 
           <button onClick={() => toggleSection("game")} className="hero-btn game-btn">
             {language === "es" ? "Jugar en 2D" : "Play 2D Game"}

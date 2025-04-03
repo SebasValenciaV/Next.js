@@ -134,20 +134,20 @@ body, html {
   text-shadow: 0 0 3px #fff;
   transition: color 0.3s;
 }
-
 .hero-btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
+  padding: 0.5rem 0.75rem; /* Reducimos el padding */
+  font-size: 1rem; /* Ajustamos el tamaño de la fuente */
   font-weight: 600;
   border: 1px solid #fff;
   background-color: transparent;
   color: #fff;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem; /* Coincide con el LanguageSwitcher */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
   margin: 0.5rem;
 }
+
 
 .hero-btn.secondary {
   background-color: transparent;
