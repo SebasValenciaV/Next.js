@@ -8,6 +8,7 @@ import CurriculumContent from "./components/curriculum";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import MusicSection from "./components/Music";
 import SpaceShooterGame from "./components/SpaceShooterGame";
+import ImageSlider from "./components/images"; // Importamos el nuevo componente de imágenes
 
 export default function Page() {
   const [showCurriculum, setShowCurriculum] = useState(false);
@@ -16,17 +17,6 @@ export default function Page() {
   const [showMusic, setShowMusic] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [language, setLanguage] = useState("en");
-  const [loggedInUser, setLoggedInUser] = useState<{ userId: string; name: string } | null>(null);
-
-  const handleLanguageSwitch = (lang: string) => setLanguage(lang);
-
-  const handleLoginSuccess = (user: { userId: string; name: string }) => {
-    setLoggedInUser(user);
-  };
-
-  const closeDashboard = () => {
-    setLoggedInUser(null);
-  };
 
   return (
     <div>
@@ -34,13 +24,12 @@ export default function Page() {
       <MatrixCanvas />
 
       {/* Selector de Idioma */}
-      <LanguageSwitcher currentLanguage={language} onSwitch={handleLanguageSwitch} />
+      <LanguageSwitcher currentLanguage={language} onSwitch={setLanguage} />
 
       <section className="hero">
         <h1 className="hero-title">
           {language === "es" ? "Bienvenido a mi sitio web" : "Welcome to my website"}
         </h1>
-        <p className="hero-subtitle">|||</p>
 
         <button onClick={() => setShowCurriculum(!showCurriculum)} className="hero-btn">
           {showCurriculum
@@ -66,7 +55,6 @@ export default function Page() {
             : language === "es" ? "Reproducir Música" : "Play Music"}
         </button>
 
-        {/* Botón de Registro/ Register */}
         <button
           onClick={() => (window.location.href = "https://sesion-three.vercel.app/")}
           className="hero-btn redirect-btn"
@@ -74,7 +62,6 @@ export default function Page() {
           {language === "es" ? "Nueva plataforma" : "New platform"}
         </button>
 
-        {/* Botón para mostrar/ocultar el juego */}
         <button onClick={() => setShowGame(!showGame)} className="hero-btn game-btn">
           {showGame
             ? language === "es" ? "Ocultar Juego" : "Hide Game"
@@ -82,7 +69,10 @@ export default function Page() {
         </button>
       </section>
 
-      {/* Slider de imágenes */}
+      {/* Nueva Sección de Imágenes */}
+      <ImageSlider />
+
+      {/* Slider de proyectos */}
       {showProjects && <ProjectsSlider />}
 
       {/* Renderizado condicional del currículum */}
@@ -94,7 +84,7 @@ export default function Page() {
       {/* Sección de Música */}
       {showMusic && <MusicSection />}
 
-      {/* Renderizado condicional del juego */}
+      {/* Juego */}
       {showGame && <SpaceShooterGame />}
     </div>
   );
