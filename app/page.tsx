@@ -59,6 +59,13 @@ export default function Page() {
           <button onClick={() => toggleSection("chatbot")} className="hero-btn ai-btn">
             {visibleSection === "chatbot" ? (language === "es" ? "Cerrar ChatBot" : "Close Chatbot") : (language === "es" ? "Preguntar a ChatBot" : "Ask ChatBot")}
           </button>
+          
+          <button
+          onClick={() => (window.location.href = "https://sesion-three.vercel.app/")}
+          className="hero-btn redirect-btn"
+        >
+          {language === "es" ? "Nueva plataforma" : "New platform"}
+        </button>
 
           <button onClick={() => setShowMusic(!showMusic)} className="hero-btn music-btn">
             {showMusic ? (language === "es" ? "Ocultar Música" : "Hide Music") : (language === "es" ? "Reproducir Música" : "Play Music")}
