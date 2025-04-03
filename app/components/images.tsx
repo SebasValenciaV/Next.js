@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 
 export default function ImageSlider() {
-  const images = useMemo(() => ["/ali.png", "/mente.png", "/moon.png", "/proverbios.png"], []);
+  const images = useMemo(() => ["/muha.png", "/mente.png", "/moon.png", "/proverbios.png"], []);
   const [i, setI] = useState(0);
 
   useEffect(() => {
