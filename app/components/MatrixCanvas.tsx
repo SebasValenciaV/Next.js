@@ -11,32 +11,45 @@ export default function MatrixCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const matrixChars = "$$$$$$$$@@@&&%&%%?¡??¡¿¿天地玄黄宇宙洪荒0123456789セバスチャンバレンシアバルガス°°°|||SEBASTIANVALENCIAVARGAS";
-    const charsArray = matrixChars.split("");
-    const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
+    // Cargar la imagen de fondo
+    const backgroundImage = new Image();
+    backgroundImage.src = "/neo.png"; // Asegúrate de que la imagen está en 'public'
 
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    backgroundImage.onload = () => {
+      const matrixChars = "$$$$$$$$@@@&&%&%%?¡??¡¿¿天地玄黄宇宙洪荒0123456789セバスチャンバレンシアバルガス°°°|||SEBASTIANVALENCIAVARGAS";
+      const charsArray = matrixChars.split("");
+      const fontSize = 16;
+      const columns = Math.floor(canvas.width / fontSize);
+      const drops = Array(columns).fill(1);
 
-      ctx.fillStyle = "#0F0"; // Letras verdes Matrix
-      ctx.font = `${fontSize}px monospace`;
+      function draw() {
+        // Dibujar la imagen de fondo con transparencia
+        ctx.globalAlpha = 0.2; // Ajusta la opacidad si es necesario
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1; // Restaurar opacidad normal para los caracteres
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = charsArray[Math.floor(Math.random() * charsArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        // Efecto de desvanecimiento del fondo
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
+        // Dibujar caracteres estilo Matrix
+        ctx.fillStyle = "#0F0";
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = charsArray[Math.floor(Math.random() * charsArray.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
         }
-        drops[i]++;
       }
-    }
 
-    const intervalId = setInterval(draw, 33);
-    return () => clearInterval(intervalId);
+      const intervalId = setInterval(draw, 33);
+      return () => clearInterval(intervalId);
+    };
   }, []);
 
   return <canvas ref={canvasRef} className="matrix-canvas" />;
