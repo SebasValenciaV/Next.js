@@ -9,9 +9,9 @@ export default function MatrixCanvas() {
     const ctx = canvas.getContext("2d")!;
 
     const backgroundImage = new Image();
-    backgroundImage.src = "/neo.png";
+    backgroundImage.src = "/eye.png";
 
-    const matrixChars = "$$@@&&%?¡¿天地玄黄宇宙洪荒0123456789セバスチャンバレンシアバルガス|||SEBASTIANVALENCIAVARGAS";
+    const matrixChars = "101010101天地玄黄宇宙洪荒セバスチャンバレンシアバルガス|||";
     const charsArray = matrixChars.split("");
     const fontSize = 28;
     let columns: number;
@@ -21,12 +21,15 @@ export default function MatrixCanvas() {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      columns = Math.floor(canvas.width / fontSize) * 2;
-      drops = Array(columns).fill(null).map(() => ({
-        y: Math.random() * canvas.height / fontSize,
-        char: charsArray[Math.floor(Math.random() * charsArray.length)],
-        speed: 0.1 + Math.random() * 0.2,
-      }));
+      // Aumentamos el factor multiplicador para que haya más columnas (más caracteres por línea)
+      columns = Math.floor(canvas.width / fontSize) * 3;
+      drops = Array(columns)
+        .fill(null)
+        .map(() => ({
+          y: Math.random() * canvas.height / fontSize,
+          char: charsArray[Math.floor(Math.random() * charsArray.length)],
+          speed: 0.1 + Math.random() * 0.2, // Se conserva la velocidad original
+        }));
     };
 
     backgroundImage.onload = () => {
@@ -61,12 +64,13 @@ export default function MatrixCanvas() {
         ctx.filter = "none";
         ctx.globalAlpha = 1;
 
+        // Ajustamos el espaciado entre columnas usando fontSize/3
         for (let i = 0; i < drops.length; i++) {
           const fadeFactor = Math.max(0, 1 - drops[i].y / (canvas.height / fontSize)); // Opacidad decrece al caer
 
           ctx.fillStyle = `rgba(0, 255, 0, ${fadeFactor})`;
           ctx.font = `bold ${fontSize}px monospace`;
-          ctx.fillText(drops[i].char, i * fontSize / 2, drops[i].y * fontSize);
+          ctx.fillText(drops[i].char, (i % columns) * (fontSize / 3), drops[i].y * fontSize);
 
           if (drops[i].y * fontSize > canvas.height) {
             drops[i] = { 
