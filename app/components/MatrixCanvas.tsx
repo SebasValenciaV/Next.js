@@ -14,38 +14,38 @@ export default function MatrixCanvas() {
     const matrixChars =
       "10101010110101010100110天地玄黄宇宙洪荒セバスチャンバレンシアバルガス|||";
     const charsArray = matrixChars.split("");
-    const fontSize = 30;
+    const fontSize = 28;
     let columns: number;
     let drops: { y: number; char: string; speed: number; size: number }[] = [];
 
-    // Variables para la animación de ojo abierto
-    let openProgress = 0;      // 0 = párpados cerrados, 1 = totalmente abiertos
+    let openProgress = 0; // 0 = párpados cerrados, 1 = totalmente abiertos
     let opening = true;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       columns = Math.floor(canvas.width / fontSize) * 3;
-      drops = Array(columns).fill(null).map(() => ({
-        y: Math.random() * (canvas.height / fontSize),
-        char: charsArray[Math.floor(Math.random() * charsArray.length)],
-        // velocidad aleatoria entre 0.02 (muy lento) y 0.52 (muy rápido)
-        speed: 0.02 + Math.random() * 0.5,
-        size: fontSize * (0.8 + Math.random() * 0.8),
-      }));
+      drops = Array(columns)
+        .fill(null)
+        .map(() => ({
+          y: Math.random() * (canvas.height / fontSize),
+          char: charsArray[Math.floor(Math.random() * charsArray.length)],
+          speed: 0.02 + Math.random() * 0.5,
+          size: fontSize * (0.5 + Math.random() * 0.5),
+        }));
     };
 
     backgroundImage.onload = () => {
       resizeCanvas();
 
-      // Pintamos negro inmediato para evitar flash blanco del navegador
+      // Pintamos el canvas de negro para evitar flash blanco
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 1) Dibujar contenido base (imagen + Matrix)
+        // 1) Dibujar la imagen de fondo con mayor brillo y opacidad completa
         const scale = Math.max(
           canvas.width / backgroundImage.width,
           canvas.height / backgroundImage.height
@@ -54,13 +54,12 @@ export default function MatrixCanvas() {
         const sh = backgroundImage.height * scale;
         const ox = (canvas.width - sw) / 2;
         const oy = (canvas.height - sh) / 3;
-        ctx.globalAlpha = 0.3;
-        ctx.filter = "brightness(4.3)";
+        ctx.filter = "brightness(2)";
+        ctx.globalAlpha = 1;
         ctx.drawImage(backgroundImage, ox, oy, sw, sh);
         ctx.filter = "none";
-        ctx.globalAlpha = 1;
 
-        // Lluvia de caracteres Matrix con velocidades variables
+        // 2) Dibujar la lluvia de caracteres tipo Matrix
         for (let i = 0; i < drops.length; i++) {
           const drop = drops[i];
           const fade = Math.max(0, 1 - drop.y / (canvas.height / fontSize));
@@ -72,7 +71,7 @@ export default function MatrixCanvas() {
             drop.y * fontSize
           );
 
-          // Reiniciar cuando llega al fondo, asignando nueva velocidad aleatoria
+          // Reiniciar la posición del carácter cuando llega al fondo
           if (drop.y * fontSize > canvas.height) {
             drops[i] = {
               y: 0,
@@ -81,18 +80,17 @@ export default function MatrixCanvas() {
               size: fontSize * (0.5 + Math.random() * 0.5),
             };
           }
-
           drops[i].y += drop.speed;
         }
 
-        // 2) Si aún estamos abriendo el “ojo”, dibujamos los párpados encima
+        // 3) Dibujar los párpados para el efecto "abrir el ojo"
         if (opening) {
           const w = canvas.width;
           const h = canvas.height;
           const cx = w / 2;
           const cy = h / 2;
-          const openY = (h / 2) * openProgress;             // distancia del centro
-          const curve = 80 * (1 - openProgress);            // curvatura de párpado
+          const openY = (h / 2) * openProgress;
+          const curve = 80 * (1 - openProgress);
 
           ctx.fillStyle = "black";
 
@@ -114,7 +112,6 @@ export default function MatrixCanvas() {
           ctx.closePath();
           ctx.fill();
 
-          // Avanzar apertura
           openProgress += 0.02;
           if (openProgress >= 1) opening = false;
         }
