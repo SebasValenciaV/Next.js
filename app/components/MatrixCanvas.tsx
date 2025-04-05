@@ -55,7 +55,7 @@ export default function MatrixCanvas() {
         const ox = (canvas.width - sw) / 2;
         const oy = (canvas.height - sh) / 3;
         ctx.globalAlpha = 0.3;
-        ctx.filter = "brightness(1.3)";
+        ctx.filter = "brightness(3.3)";
         ctx.drawImage(backgroundImage, ox, oy, sw, sh);
         ctx.filter = "none";
         ctx.globalAlpha = 1;
