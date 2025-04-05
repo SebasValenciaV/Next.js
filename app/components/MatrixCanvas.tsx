@@ -14,7 +14,7 @@ export default function MatrixCanvas() {
     const matrixChars =
       "10101010110101010100110天地玄黄宇宙洪荒セバスチャンバレンシアバルガス|||";
     const charsArray = matrixChars.split("");
-    const fontSize = 28;
+    const fontSize = 30;
     let columns: number;
     let drops: { y: number; char: string; speed: number; size: number }[] = [];
 
@@ -31,7 +31,7 @@ export default function MatrixCanvas() {
         char: charsArray[Math.floor(Math.random() * charsArray.length)],
         // velocidad aleatoria entre 0.02 (muy lento) y 0.52 (muy rápido)
         speed: 0.02 + Math.random() * 0.5,
-        size: fontSize * (0.5 + Math.random() * 0.5),
+        size: fontSize * (0.8 + Math.random() * 0.8),
       }));
     };
 
@@ -55,7 +55,7 @@ export default function MatrixCanvas() {
         const ox = (canvas.width - sw) / 2;
         const oy = (canvas.height - sh) / 3;
         ctx.globalAlpha = 0.3;
-        ctx.filter = "brightness(3.3)";
+        ctx.filter = "brightness(4.3)";
         ctx.drawImage(backgroundImage, ox, oy, sw, sh);
         ctx.filter = "none";
         ctx.globalAlpha = 1;
