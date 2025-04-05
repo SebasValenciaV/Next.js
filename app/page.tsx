@@ -107,7 +107,7 @@ export default function Page() {
           left: 0, 
           width: "100vw", 
           height: "100vh", 
-          backgroundColor: "black", 
+         
           zIndex: 1000, 
           display: "flex", 
           flexDirection: "column", 
