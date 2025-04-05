@@ -97,7 +97,7 @@ export default function Page() {
         </div>
       )}
 
-      {!visibleSection && !showFullScreenGame && <ImageSlider />}
+     {/*{!visibleSection && !showFullScreenGame && <ImageSlider />}     */}
       {showMusic && <MusicSection />}
 
       {showFullScreenGame && (

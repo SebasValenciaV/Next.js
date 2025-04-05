@@ -29,7 +29,8 @@ export default function MatrixCanvas() {
       drops = Array(columns).fill(null).map(() => ({
         y: Math.random() * (canvas.height / fontSize),
         char: charsArray[Math.floor(Math.random() * charsArray.length)],
-        speed: 0.1 + Math.random() * 0.2,
+        // velocidad aleatoria entre 0.02 (muy lento) y 0.52 (muy rápido)
+        speed: 0.02 + Math.random() * 0.5,
         size: fontSize * (0.5 + Math.random() * 0.5),
       }));
     };
@@ -45,7 +46,6 @@ export default function MatrixCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // 1) Dibujar contenido base (imagen + Matrix)
-        // Imagen de fondo
         const scale = Math.max(
           canvas.width / backgroundImage.width,
           canvas.height / backgroundImage.height
@@ -60,7 +60,7 @@ export default function MatrixCanvas() {
         ctx.filter = "none";
         ctx.globalAlpha = 1;
 
-        // Lluvia de caracteres Matrix
+        // Lluvia de caracteres Matrix con velocidades variables
         for (let i = 0; i < drops.length; i++) {
           const drop = drops[i];
           const fade = Math.max(0, 1 - drop.y / (canvas.height / fontSize));
@@ -71,14 +71,17 @@ export default function MatrixCanvas() {
             (i % columns) * (fontSize / 3),
             drop.y * fontSize
           );
+
+          // Reiniciar cuando llega al fondo, asignando nueva velocidad aleatoria
           if (drop.y * fontSize > canvas.height) {
             drops[i] = {
               y: 0,
               char: charsArray[Math.floor(Math.random() * charsArray.length)],
-              speed: 0.1 + Math.random() * 0.2,
+              speed: 0.02 + Math.random() * 0.5,
               size: fontSize * (0.5 + Math.random() * 0.5),
             };
           }
+
           drops[i].y += drop.speed;
         }
 
@@ -112,7 +115,7 @@ export default function MatrixCanvas() {
           ctx.fill();
 
           // Avanzar apertura
-          openProgress += 0.02;  
+          openProgress += 0.02;
           if (openProgress >= 1) opening = false;
         }
 
@@ -136,7 +139,7 @@ export default function MatrixCanvas() {
         zIndex: -1,
         width: "100vw",
         height: "100vh",
-        backgroundColor: "black", // asegura fondo negro
+        backgroundColor: "black",
         pointerEvents: "none",
       }}
     />
