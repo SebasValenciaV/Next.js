@@ -109,8 +109,8 @@ Additionally, I have practical experience developing AI prompts that guide model
               <em>(Jun 2023 – Nov 2024)</em>
               <br />
               {language === "es"
-                ? "Soporte al cliente, resolucion de problemas, analisis de datos, administracion de plataforma web, informes de casos de investigacion profunda garantizando los derechos de todos los ususarios."
-                : "Specialized in technical support, problem resolution, and ensuring security and efficiency in multiple languages (French, English, Portuguese, German, Russian, Italian, Dutch)."}
+                ? "Investigar, analizar datos, manejar información confidencial, reportar hallazgos y encontrar la mejor solución con una ejecución adecuada."
+                : "Research, analyze data, handle confidential information, report findings, and identify the best solution with proper execution."}
             </li>
             <li>
               <strong>Ducaplast Sas</strong> –{" "}
