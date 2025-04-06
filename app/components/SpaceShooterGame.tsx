@@ -91,173 +91,242 @@ export default function SpaceDodgerGame() {
     // Cada diseño tendrá forma y colores distintos; se integrará una representación del armamento
     switch (design) {
       case 0:
-        // Diseño 0: Nave abstracta con formas irregulares y detalles futuristas
-        ctx.beginPath();
-        ctx.moveTo(0, -spaceship.height * 0.5);
-        ctx.bezierCurveTo(-spaceship.width * 0.6, -spaceship.height * 0.3,
-                          -spaceship.width * 0.5, spaceship.height * 0.3,
-                          0, spaceship.height * 0.5);
-        ctx.bezierCurveTo(spaceship.width * 0.5, spaceship.height * 0.3,
-                          spaceship.width * 0.6, -spaceship.height * 0.3,
-                          0, -spaceship.height * 0.5);
-        ctx.closePath();
-        let grad0 = ctx.createRadialGradient(0, 0, spaceship.width * 0.1, 0, 0, spaceship.width * 0.5);
-        grad0.addColorStop(0, "#ff3366");
-        grad0.addColorStop(1, "#330000");
-        ctx.fillStyle = grad0;
-        ctx.fill();
-        // Detalle: rayos de energía que irradian desde el centro
-        for (let i = 0; i < 8; i++) {
-          let angle = i * Math.PI / 4;
-          ctx.beginPath();
-          ctx.moveTo(0, 0);
-          ctx.lineTo(Math.cos(angle) * spaceship.width * 0.6, Math.sin(angle) * spaceship.height * 0.6);
-          ctx.strokeStyle = "#ffcc00";
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-        break;
+  // Diseño 0: Nave inspirada en un caza TIE pero más estilizada y agresiva
+  ctx.beginPath();
+  // Fuselaje central alargado
+  ctx.moveTo(-spaceship.width * 0.15, -spaceship.height * 0.5);
+  ctx.lineTo(-spaceship.width * 0.25, -spaceship.height * 0.1);
+  ctx.lineTo(-spaceship.width * 0.1, spaceship.height * 0.5);
+  ctx.lineTo(spaceship.width * 0.1, spaceship.height * 0.5);
+  ctx.lineTo(spaceship.width * 0.25, -spaceship.height * 0.1);
+  ctx.lineTo(spaceship.width * 0.15, -spaceship.height * 0.5);
+  ctx.closePath();
+
+  ctx.fillStyle = "#0a0a0a"; // color base oscuro
+  ctx.fill();
+  ctx.strokeStyle = "#39ff14"; // contorno neón verde
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Alas laterales grandes en forma de trapecio
+  ctx.beginPath();
+  ctx.moveTo(-spaceship.width * 0.6, -spaceship.height * 0.3);
+  ctx.lineTo(-spaceship.width * 0.35, 0);
+  ctx.lineTo(-spaceship.width * 0.6, spaceship.height * 0.3);
+  ctx.closePath();
+  ctx.fillStyle = "#111111";
+  ctx.fill();
+  ctx.strokeStyle = "#ff4500"; // contorno neón naranja
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(spaceship.width * 0.6, -spaceship.height * 0.3);
+  ctx.lineTo(spaceship.width * 0.35, 0);
+  ctx.lineTo(spaceship.width * 0.6, spaceship.height * 0.3);
+  ctx.closePath();
+  ctx.fillStyle = "#111111";
+  ctx.fill();
+  ctx.strokeStyle = "#ff4500";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Cañón doble inferior
+  ctx.beginPath();
+  ctx.rect(-5, spaceship.height * 0.5, 4, 10);
+  ctx.rect(1, spaceship.height * 0.5, 4, 10);
+  ctx.fillStyle = weapon === "laser" ? "#ff0000" : "#999999";
+  ctx.fill();
+  break;
+    
       case 1:
-        // Diseño 1: Nave geométrica abstracta con ángulos agudos y arma lateral integrada
+        // Diseño 1: Nave tipo X-Wing con alas divididas y cuerpo afilado
         ctx.beginPath();
-        ctx.moveTo(0, -spaceship.height * 0.45);
-        ctx.lineTo(-spaceship.width * 0.55, 0);
-        ctx.lineTo(0, spaceship.height * 0.45);
-        ctx.lineTo(spaceship.width * 0.55, 0);
+        ctx.moveTo(0, -spaceship.height * 0.6); // punta frontal
+        ctx.lineTo(-spaceship.width * 0.15, -spaceship.height * 0.2);
+        ctx.lineTo(-spaceship.width * 0.1, spaceship.height * 0.4);
+        ctx.lineTo(spaceship.width * 0.1, spaceship.height * 0.4);
+        ctx.lineTo(spaceship.width * 0.15, -spaceship.height * 0.2);
         ctx.closePath();
-        let grad1 = ctx.createLinearGradient(0, -spaceship.height * 0.45, 0, spaceship.height * 0.45);
-        grad1.addColorStop(0, "#6600cc");
-        grad1.addColorStop(1, "#000033");
-        ctx.fillStyle = grad1;
+        ctx.fillStyle = "#0d0d0d";
         ctx.fill();
-        // Armamento lateral: pequeños triángulos a ambos lados
-        ctx.beginPath();
-        ctx.moveTo(-spaceship.width * 0.55, 0);
-        ctx.lineTo(-spaceship.width * 0.7, spaceship.height * 0.1);
-        ctx.lineTo(-spaceship.width * 0.55, spaceship.height * 0.2);
-        ctx.closePath();
-        ctx.fillStyle = weapon === "laser" ? "#ff0000" : "#777777";
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(spaceship.width * 0.55, 0);
-        ctx.lineTo(spaceship.width * 0.7, -spaceship.height * 0.1);
-        ctx.lineTo(spaceship.width * 0.55, -spaceship.height * 0.2);
-        ctx.closePath();
-        ctx.fill();
-        break;
-      case 2:
-        // Diseño 2: Nave circular abstracta con detalles radiales y cúpula asimétrica
-        ctx.beginPath();
-        ctx.arc(0, 0, spaceship.width * 0.5, 0, Math.PI * 2);
-        let grad2 = ctx.createRadialGradient(0, 0, spaceship.width * 0.2, 0, 0, spaceship.width * 0.5);
-        grad2.addColorStop(0, "#00ffcc");
-        grad2.addColorStop(1, "#003333");
-        ctx.fillStyle = grad2;
-        ctx.fill();
-        // Detalles radiales: líneas que irradian desde el centro
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 12; i++) {
-          let angle = i * (Math.PI * 2 / 12);
+        ctx.strokeStyle = "#ff0000";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        // Alas divididas en X
+        ctx.strokeStyle = "#ffaa00";
+        ctx.lineWidth = 3;
+        for (let i = -1; i <= 1; i += 2) {
           ctx.beginPath();
-          ctx.moveTo(0, 0);
-          ctx.lineTo(Math.cos(angle) * spaceship.width * 0.5, Math.sin(angle) * spaceship.width * 0.5);
+          ctx.moveTo(i * spaceship.width * 0.2, 0);
+          ctx.lineTo(i * spaceship.width * 0.5, spaceship.height * 0.4);
+          ctx.stroke();
+    
+          ctx.beginPath();
+          ctx.moveTo(i * spaceship.width * 0.2, 0);
+          ctx.lineTo(i * spaceship.width * 0.5, -spaceship.height * 0.4);
           ctx.stroke();
         }
-        // Cúpula asimétrica: un arco encima de la nave
-        ctx.beginPath();
-        ctx.arc(0, -spaceship.height * 0.15, spaceship.width * 0.3, Math.PI, 2 * Math.PI);
-        ctx.fillStyle = "#cccccc";
-        ctx.fill();
-        // Cañón central alargado
-        ctx.beginPath();
-        ctx.rect(-4, -spaceship.height * 0.6, 8, spaceship.height * 0.2);
-        ctx.fillStyle = weapon === "spread" ? "#ff9933" : "#111111";
-        ctx.fill();
-        break;
-      case 3:
-        // Diseño 3: Nave angular abstracta con forma de diamante y doble cañón
-        ctx.beginPath();
-        ctx.moveTo(-spaceship.width * 0.5, 0);
-        ctx.lineTo(0, -spaceship.height * 0.5);
-        ctx.lineTo(spaceship.width * 0.5, 0);
-        ctx.lineTo(0, spaceship.height * 0.5);
-        ctx.closePath();
-        let grad3 = ctx.createLinearGradient(-spaceship.width * 0.5, 0, spaceship.width * 0.5, 0);
-        grad3.addColorStop(0, "#009944");
-        grad3.addColorStop(1, "#004422");
-        ctx.fillStyle = grad3;
-        ctx.fill();
-        // Doble cañón: en la punta superior e inferior
-        ctx.beginPath();
-        ctx.rect(-3, -spaceship.height * 0.5 - 12, 6, 12);
-        ctx.fillStyle = weapon === "laser" ? "#ff0000" : "#333333";
-        ctx.fill();
-        ctx.beginPath();
-        ctx.rect(-3, spaceship.height * 0.5, 6, 12);
-        ctx.fill();
-        // Líneas diagonales para dar un toque abstracto
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(-spaceship.width * 0.5, 0);
-        ctx.lineTo(0, spaceship.height * 0.5);
-        ctx.moveTo(spaceship.width * 0.5, 0);
-        ctx.lineTo(0, spaceship.height * 0.5);
-        ctx.stroke();
-        break;
-      case 4:
-        // Diseño 4: Nave retro-pixel abstracta con patrón irregular y "armamento" digital
-        ctx.fillStyle = "#ff66cc";
-        ctx.fillRect(-spaceship.width * 0.5, -spaceship.height * 0.5, spaceship.width, spaceship.height);
-        // Patrón pixelado abstracto
-        ctx.fillStyle = "#000000";
-        for (let i = -spaceship.width * 0.5; i < spaceship.width * 0.5; i += 10) {
-          for (let j = -spaceship.height * 0.5; j < spaceship.height * 0.5; j += 10) {
-            if (Math.random() < 0.2) {
-              ctx.fillRect(i, j, 4, 4);
-            }
-          }
+    
+        // Armas: tubos en las alas
+        ctx.fillStyle = weapon === "laser" ? "#ff3333" : "#aaaaaa";
+        for (let i = -1; i <= 1; i += 2) {
+          ctx.beginPath();
+          ctx.rect(i * spaceship.width * 0.5 - 2, spaceship.height * 0.4 - 4, 4, 10);
+          ctx.fill();
         }
-        // "Arma" pixelada: rectángulo en la parte inferior central
-        ctx.fillStyle = weapon === "laser" ? "#ff0000" : "#222222";
-        ctx.fillRect(-spaceship.width * 0.15, spaceship.height * 0.2, spaceship.width * 0.3, 6);
         break;
-      case 5:
-        // Diseño 5: Nave futurista abstracta con efecto de neón y contornos irregulares
+    
+      case 2:
+        // Diseño 2: Nave circular estilo caza droide
         ctx.beginPath();
-        ctx.moveTo(0, -spaceship.height * 0.5);
-        ctx.lineTo(-spaceship.width * 0.6, -spaceship.height * 0.1);
-        ctx.lineTo(-spaceship.width * 0.4, spaceship.height * 0.5);
-        ctx.lineTo(spaceship.width * 0.4, spaceship.height * 0.5);
-        ctx.lineTo(spaceship.width * 0.6, -spaceship.height * 0.1);
-        ctx.closePath();
-        let grad5 = ctx.createLinearGradient(0, -spaceship.height * 0.5, 0, spaceship.height * 0.5);
-        grad5.addColorStop(0, "#44ffff");
-        grad5.addColorStop(1, "#004444");
-        ctx.fillStyle = grad5;
+        ctx.arc(0, 0, spaceship.width * 0.45, 0, Math.PI * 2);
+        ctx.fillStyle = "#111111";
         ctx.fill();
-        // Contorno de neón brillante
+        ctx.strokeStyle = "#ffd700"; // dorado
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        // Detalles tipo ojos / sensores
+        ctx.fillStyle = "#ff0000";
+        ctx.beginPath();
+        ctx.arc(0, -10, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, 10, 4, 0, Math.PI * 2);
+        ctx.fill();
+    
+        // Alas curvas en los costados
+        ctx.strokeStyle = "#39ff14"; // verde neón
+        ctx.lineWidth = 3;
+        for (let i = -1; i <= 1; i += 2) {
+          ctx.beginPath();
+          ctx.arc(i * spaceship.width * 0.5, 0, spaceship.width * 0.3, -Math.PI / 2, Math.PI / 2);
+          ctx.stroke();
+        }
+    
+        // Cañón central
+        ctx.fillStyle = weapon === "spread" ? "#ff9933" : "#444";
+        ctx.fillRect(-4, spaceship.height * 0.5, 8, 12);
+        break;
+    
+      case 3:
+        // Diseño 3: Nave estilo caza Mandaloriano, forma de lanza con alas diagonales
+        ctx.beginPath();
+        ctx.moveTo(0, -spaceship.height * 0.6);
+        ctx.lineTo(-spaceship.width * 0.2, -spaceship.height * 0.2);
+        ctx.lineTo(-spaceship.width * 0.15, spaceship.height * 0.5);
+        ctx.lineTo(spaceship.width * 0.15, spaceship.height * 0.5);
+        ctx.lineTo(spaceship.width * 0.2, -spaceship.height * 0.2);
+        ctx.closePath();
+        ctx.fillStyle = "#121212";
+        ctx.fill();
+        ctx.strokeStyle = "#c0c0c0"; // plateado
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        // Alas diagonales tipo cuchillas
+        ctx.beginPath();
+        ctx.moveTo(-spaceship.width * 0.6, -spaceship.height * 0.3);
+        ctx.lineTo(-spaceship.width * 0.15, 0);
+        ctx.lineTo(-spaceship.width * 0.6, spaceship.height * 0.3);
+        ctx.closePath();
+        ctx.fillStyle = "#1a1a1a";
+        ctx.fill();
+        ctx.strokeStyle = "#ff6600"; // neón naranja
+        ctx.stroke();
+    
+        ctx.beginPath();
+        ctx.moveTo(spaceship.width * 0.6, -spaceship.height * 0.3);
+        ctx.lineTo(spaceship.width * 0.15, 0);
+        ctx.lineTo(spaceship.width * 0.6, spaceship.height * 0.3);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    
+        // Armas duales
+        ctx.fillStyle = weapon === "laser" ? "#ff4444" : "#999999";
+        ctx.fillRect(-3, -spaceship.height * 0.6, 6, 12);
+        ctx.fillRect(-3, spaceship.height * 0.5, 6, 12);
+        break;
+    
+      case 4:
+        // Diseño 4: Nave angular tipo bombardero con geometría segmentada
+        ctx.beginPath();
+        ctx.moveTo(-spaceship.width * 0.2, -spaceship.height * 0.4);
+        ctx.lineTo(-spaceship.width * 0.4, 0);
+        ctx.lineTo(-spaceship.width * 0.2, spaceship.height * 0.4);
+        ctx.lineTo(spaceship.width * 0.2, spaceship.height * 0.4);
+        ctx.lineTo(spaceship.width * 0.4, 0);
+        ctx.lineTo(spaceship.width * 0.2, -spaceship.height * 0.4);
+        ctx.closePath();
+        ctx.fillStyle = "#0b0b0b";
+        ctx.fill();
+        ctx.strokeStyle = "#ff3300";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        // Detalles centrales
+        ctx.beginPath();
+        ctx.rect(-spaceship.width * 0.1, -10, spaceship.width * 0.2, 20);
+        ctx.fillStyle = "#666666";
+        ctx.fill();
+    
+        // Bombas o cápsulas laterales
+        for (let i = -1; i <= 1; i += 2) {
+          ctx.beginPath();
+          ctx.arc(i * spaceship.width * 0.35, 0, 6, 0, Math.PI * 2);
+          ctx.fillStyle = "#ffcc00";
+          ctx.fill();
+        }
+        break;
+    
+      case 5:
+        // Diseño 5: Nave futurista asimétrica con detalles tipo interceptor Sith
+        ctx.beginPath();
+        ctx.moveTo(0, -spaceship.height * 0.6);
+        ctx.lineTo(-spaceship.width * 0.3, -spaceship.height * 0.1);
+        ctx.lineTo(-spaceship.width * 0.2, spaceship.height * 0.5);
+        ctx.lineTo(spaceship.width * 0.2, spaceship.height * 0.5);
+        ctx.lineTo(spaceship.width * 0.3, -spaceship.height * 0.2);
+        ctx.closePath();
+        ctx.fillStyle = "#141414";
+        ctx.fill();
         ctx.strokeStyle = "#ff00ff";
         ctx.lineWidth = 3;
         ctx.stroke();
-        // "Barriga de cañones": rectángulo central y dos laterales
+    
+        // Alas inclinadas
         ctx.beginPath();
-        ctx.rect(-spaceship.width * 0.4, spaceship.height * 0.25, spaceship.width * 0.8, 8);
-        ctx.fillStyle = weapon === "spread" ? "#ff9933" : "#ff00ff";
+        ctx.moveTo(-spaceship.width * 0.4, -spaceship.height * 0.2);
+        ctx.lineTo(-spaceship.width * 0.15, 0);
+        ctx.lineTo(-spaceship.width * 0.4, spaceship.height * 0.3);
+        ctx.closePath();
+        ctx.fillStyle = "#1c1c1c";
         ctx.fill();
+        ctx.strokeStyle = "#39ff14"; // verde neón
+        ctx.stroke();
+    
         ctx.beginPath();
-        ctx.rect(-spaceship.width * 0.6, spaceship.height * 0.1, 6, spaceship.height * 0.3);
-        ctx.rect(spaceship.width * 0.6 - 6, spaceship.height * 0.1, 6, spaceship.height * 0.3);
+        ctx.moveTo(spaceship.width * 0.4, -spaceship.height * 0.3);
+        ctx.lineTo(spaceship.width * 0.15, 0);
+        ctx.lineTo(spaceship.width * 0.4, spaceship.height * 0.2);
+        ctx.closePath();
         ctx.fill();
+        ctx.stroke();
+    
+        // Barriga de cañones
+        ctx.fillStyle = weapon === "spread" ? "#ff9933" : "#444";
+        ctx.fillRect(-spaceship.width * 0.2, spaceship.height * 0.35, spaceship.width * 0.4, 6);
         break;
+    
       default:
         break;
     }
     ctx.restore();
     
-  }    
-
+  }
   // Función para dibujar una vista previa en miniatura de la nave
   const drawSpaceshipPreview = (
     ctx: CanvasRenderingContext2D,
