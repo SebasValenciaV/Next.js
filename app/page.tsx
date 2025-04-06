@@ -47,21 +47,28 @@ export default function Page() {
       <DateTimeWidget language={language} />
       <MatrixCanvas />
 
-      {/* Encabezado con botones y LanguageSwitcher */}
+      {/* 1) Solo LanguageSwitcher */}
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: "10px",
           marginBottom: "10px",
-          position: "relative",
-          zIndex: 10,
-          flexWrap: "wrap",
         }}
       >
         <LanguageSwitcher currentLanguage={language} onSwitch={setLanguage} />
-        {(visibleSection || showFullScreenGame) && (
+      </div>
+
+      {/* 2) Botón Hide Section muy abajo */}
+      {(visibleSection || showFullScreenGame) && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "40px",    // <--- más espacio desde el switcher
+            marginBottom: "20px",
+          }}
+        >
           <button
             onClick={() => {
               setVisibleSection(null);
@@ -71,14 +78,16 @@ export default function Page() {
           >
             {language === "es" ? "Ocultar Sección" : "Hide Section"}
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Botones principales */}
       {!showFullScreenGame && !visibleSection && (
         <section className="hero">
           <h1 className="hero-title">
-            {language === "es" ? "Bienvenido a mi sitio web" : "Welcome to my website"}
+            {language === "es"
+              ? "Bienvenido a mi sitio web"
+              : "Welcome to my website"}
           </h1>
           <div
             style={{
@@ -88,16 +97,28 @@ export default function Page() {
               flexWrap: "wrap",
             }}
           >
-            <button onClick={() => toggleSection("curriculum")} className="hero-btn">
+            <button
+              onClick={() => toggleSection("curriculum")}
+              className="hero-btn"
+            >
               {language === "es" ? "Ver Currículum" : "View Curriculum Vitae"}
             </button>
-            <button onClick={() => toggleSection("projects")} className="hero-btn secondary">
+            <button
+              onClick={() => toggleSection("projects")}
+              className="hero-btn secondary"
+            >
               {language === "es" ? "Ver Mockups" : "See Mockups"}
             </button>
-            <button onClick={() => toggleSection("chatbot")} className="hero-btn ai-btn">
+            <button
+              onClick={() => toggleSection("chatbot")}
+              className="hero-btn ai-btn"
+            >
               {language === "es" ? "Preguntar a ChatBot" : "Ask ChatBot"}
             </button>
-            <button onClick={() => setShowMusic(!showMusic)} className="hero-btn music-btn">
+            <button
+              onClick={() => setShowMusic(!showMusic)}
+              className="hero-btn music-btn"
+            >
               {showMusic
                 ? language === "es"
                   ? "Ocultar Música"
@@ -107,12 +128,17 @@ export default function Page() {
                 : "Listen to Music"}
             </button>
             <button
-              onClick={() => (window.location.href = "https://sesion-three.vercel.app/")}
+              onClick={() =>
+                (window.location.href = "https://sesion-three.vercel.app/")
+              }
               className="hero-btn redirect-btn"
             >
               {language === "es" ? "Nueva plataforma" : "New platform"}
             </button>
-            <button onClick={() => toggleSection("game")} className="hero-btn game-btn">
+            <button
+              onClick={() => toggleSection("game")}
+              className="hero-btn game-btn"
+            >
               {language === "es" ? "Jugar en 2D" : "Play 2D Game"}
             </button>
           </div>
@@ -123,7 +149,9 @@ export default function Page() {
       {(visibleSection || showFullScreenGame) && (
         <div style={{ marginTop: "30px", padding: "0 10px", zIndex: 1 }}>
           {visibleSection === "projects" && <ProjectsSlider />}
-          {visibleSection === "curriculum" && <CurriculumContent language={language} />}
+          {visibleSection === "curriculum" && (
+            <CurriculumContent language={language} />
+          )}
           {visibleSection === "chatbot" && <ChatBot />}
           {showFullScreenGame && (
             <div
